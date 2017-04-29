@@ -1,0 +1,79 @@
+<html ng-app="portal">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+        <title id="titlePgAll">WebDental | Soluçoes</title>
+        <!-- CSS ARQUIVOS  -->
+		<link rel="icon" href="img/webdental.ico" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="bower_components/tether/dist/css/tether.min.css" />
+        <!-- Font Awesome -->
+        <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Ionicons -->
+        <link href="bower_components/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+        <!-- Main styles for this application -->
+        <link href="assets/css/style.css" rel="stylesheet">
+        <link href="assets/css/style_a.css" rel="stylesheet">
+        
+        
+        
+        <!-- Scripts JAVASCRIPT  -->
+        <script src="bower_components/jquery/dist/jquery.min.js" type="text/javascript"></script>
+        <script src="bower_components/tether/dist/js/tether.min.js" type="text/javascript"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+
+
+
+
+        <!-- Scripts Bibliotecas  -->
+		<script src="bower_components/angular/angular.min.js"></script>
+        <script src="components/angular-messages.js"></script>
+        <script src="components/angular-route.min.js" type="text/javascript"></script>
+        <script src="bower_components/angular-sessionstorage/angular-sessionstorage.js"></script>
+
+        
+
+
+
+        <!-- Scripts app  -->
+        <script src="app/app.js"></script>
+        <script src="app/config/routeconfig.js"></script>
+        
+        
+        <!-- Scriptis Diretivas  -->
+        <script src="app/directives/ngenterdirective.js" ></script>
+
+        
+        <!-- Scriptis Interceptores SEGURANÇA INTERCEPTION -->
+        <script src="app/interceptors/timestampinterceptor.js" ></script>
+        <script src="app/config/interceptorsconfig.js" ></script>
+        
+        <!-- VIEW -->
+
+        <!-- Scriptis Controles  ************************ -->
+        <script src="app/controllers/menuctrl.js"></script>
+        <script src="app/controllers/loginctrl.js"></script>
+        
+        
+        <!--- Scriptis Services  ************************ -->
+        <script src="app/services/simpleservice.js"></script>
+        
+        <!--- Scriptis Configuraçoes url***  -->
+        <script src="app/value/configvalue.js"></script>
+
+    </head>
+    <body class="" >
+        <!-- <div ng-include="'view/header.html'"></div> -->
+        <div ng-view   > </div>
+        <!-- <div ng-include="'view/footer.html'"></div> -->
+    
+
+    </body>
+
+
+
+</html>
+

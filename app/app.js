@@ -1,0 +1,1 @@
+angular.module("portal", ["ngMessages","ngRoute","ngSessionStorage"]);

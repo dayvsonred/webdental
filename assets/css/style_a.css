@@ -1,0 +1,114 @@
+
+
+
+
+.login_span_bt_sl{
+    padding: 0 !important;
+    margin: 0px;
+    background-color: transparent !important;
+    border-right-width: 0px !important;
+
+}
+
+
+.login_bt_select_a{
+
+    height: 33px !important;
+	margin-top: 0px;
+    border-top-left-radius:0em;
+    border-top-right-radius:3px;
+    border-bottom-right-radius:3px;
+    border-bottom-left-radius:0em;
+}
+.login-cad{
+    -webkit-box-shadow: -4px 0px 9px -1px rgba(0,0,0,0.36);
+    -moz-box-shadow: -4px 0px 9px -1px rgba(0,0,0,0.36);
+    box-shadow: -4px 0px 9px -1px rgba(0,0,0,0.36);
+}
+
+
+.dropClinicas{
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 160px;
+
+
+}
+.dropClinicas li{
+    padding: 6px 0px 6px 10px;
+}
+
+.dropClinicas li:hover{
+    background-color: #ddd;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.dropClinicas li:hover a{
+    color: #0275d8;
+}
+
+.msgLogarSucesso{
+    position: relative;
+    top: 35%;
+    z-index: 0;
+    display: none;
+    opacity: 0
+
+}
+.msgLogarSucesso div, .msgLogarSucesso div>div, {
+    z-index: 0;
+    display: none;
+}
+
+.msgLogarSucessoConteudo{
+    position: absolute;
+    min-width: 361;
+    margin-left: 30 ;
+}
+
+
+.AddBlock {
+    display: block !important;
+    z-index: 99 !important;
+}
+
+.navBarCSS{
+    background-color: #fff;
+    border-bottom: 1px solid #cfd8dc;
+    z-index: 100;
+    width: 100%;
+    height: 55px;
+    padding: 0;
+    line-height: 55px;
+    display: block;
+}
+.siedBar{
+
+    background-color: #263238;
+    min-height: 100%;
+    max-width: 200px;
+}
+
+
+/*--------------------------------------------------------
+                ANIMAIONS
+--------------------------------------------------------*/
+
+
+/* The animation code */
+@keyframes showSimples {
+    0%   {opacity: 0;}
+
+    50%  {opacity: 1;}
+
+    100% {opacity: 0;}
+}
+
+/* The element to apply the animation to */
+.showSimplesEFEC {
+    animation-name: showSimples;
+    animation-duration: 3s;
+}

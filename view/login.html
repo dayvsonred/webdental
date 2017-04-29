@@ -1,0 +1,105 @@
+
+
+        <div class="container">
+            <div class="row">
+                
+
+                <div class="col-md-9 m-x-auto pull-xs-none vamiddle">
+                     <!-- MSG SUCESSO LOGIN -->
+                    <div class="msgLogarSucesso" id='msgLogar' >
+                        <div class="col-sm-6 col-md-4 msgLogarSucessoConteudo">
+                            <div class="card card-inverse card-success text-xs-center">
+                                <div class="card-block">
+                                    <blockquote class="card-blockquote">
+                                        <p> Logado - Selecione Uma clinica.</p>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MSG SUCESSO LOGIN -->
+                    <div class="msgLogarErro" id='msgLogarErro' >
+                        <div class="col-sm-6 col-md-4">
+                            <div class="card card-inverse card-danger text-xs-center">
+                                <div class="card-block">
+                                    <blockquote class="card-blockquote">
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                                        <footer>Someone famous in
+                                            <cite title="Source Title">Source Title</cite>
+                                        </footer>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="card-group ">
+                        <div class="card p-a-2">
+                            <div class="card-block">
+                                <h1 ng-click="test()">Logar </h1> <!-- Informe Usuário e Senha -->
+                                <p class="text-muted">Faça login em sua conta</p>
+                                <div class="input-group m-b-1">
+                                    <span class="input-group-addon"><i class="icon-user"></i></span>
+                                    <input id="IPTusuario" type="text" class="form-control" placeholder="Usuario" ng-model="frm.usuario" ng-keyup="UserKeyPress()">
+                                </div>
+                                <div class="input-group m-b-2">
+                                    <span class="input-group-addon"><i class="icon-lock"></i></span>
+                                    <input id="IPTsenha"  type="password" class="form-control" placeholder="Senha" ng-keyup="SenhaKeyPress()"  ng-model="frm.senha" >
+                                </div>
+                                <div class="input-group m-b-2">
+                                    <span class="input-group-addon"><i class="icon-list"></i></span>
+                                    <input type="text" id="idClinicas" name="clinicaSelect" ng-value="frm.clinicaSelec"  ng-model="frm.clinicaSelec" class="form-control" placeholder="Selecione sua clinica(s)">
+                                    <span class="input-group-addon login_span_bt_sl">
+                                        <button type="button" class="btn btn-primary dropdown-toggle login_bt_select_a" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right dropClinicas">
+                                            <li ng-repeat="x in ListClinicas" ng-click="setClinica(x.chave , x.nm_unidade_atendimento)"  ><a href="javascript:void(0)"  >{{x.nm_unidade_atendimento}}</a> </li>
+                                        </ul>
+                                    </span>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <button type="button" ng-click="LogarSistema()" class="btn btn-primary p-x-2">Entrar</button>
+                                    </div>
+                                    <div class="col-xs-6 text-xs-right">
+                                        <button type="button" class="btn btn-link p-x-0">Esqueceu a senha?</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div  class="card card-inverse card-primary p-y-3 Login-cad" style="width:49%">
+                            <div class="card-block text-xs-center">
+                                <div>
+                                    <h2>Bem Vindo a WebDental</h2>
+                                    <p>Nada mais importante do que um bom atendimento, cercado da gestão empresarial focado no crescimento do seu negócio.</p>
+                                    <button type="button" class="btn btn-primary active m-t-1">Registre agora!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+        function verticalAlignMiddle()
+        {
+            var bodyHeight = $(window).height();
+            var formHeight = $('.vamiddle').height();
+            var marginTop = (bodyHeight / 2) - (formHeight / 2);
+            if (marginTop > 0)
+            {
+                $('.vamiddle').css('margin-top', marginTop);
+            }
+        }
+        $(document).ready(function()
+        {
+            verticalAlignMiddle();
+        });
+        $(window).bind('resize', verticalAlignMiddle);
+        </script>
+    </body>
+</html>

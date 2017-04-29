@@ -1,0 +1,25 @@
+{
+  "name": "versatil-site",
+  "homepage": "www.versatil.com.br",
+  "authors": [
+    "<Tiago & Dayvson .<dayvson.red@gmail.com>>"
+  ],
+  "description": "site de apresentação da empresa",
+  "main": "index",
+  "keywords": [
+    "versatil",
+    "site",
+    "front"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-sessionstorage": "^1.1.5"
+  }
+}
