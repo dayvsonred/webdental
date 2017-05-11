@@ -1,0 +1,172 @@
+
+
+<!--
+    *
+    * MENU PRICIPAL COMANTADO
+    *
+-->
+<!-- <div ng-include="'view/partes/head2.html'"></div>-->
+
+
+<!-- Main content -->
+   
+    <div class="col-md-12 Wbox-Main"  >
+        <div class="Wbox bordRadi3" > 
+         
+        <div class="Wbox-title bgC" > 
+           <strong> Agenda do Dia </strong>
+         </div>
+
+         <div class="Wbox-itens " > 
+            <a > <i class="icon-action-undo"></i> Voltar </a>
+            <a ng-click="ipthi()" > <i class="fa fa-file-pdf-o"></i> Imprimir </a>
+            <a > <i class="fa fa-calendar" aria-hidden="true"> </i> Compromisso do Prestador </a>
+         </div>
+
+         <div class="Wbox-itens_2" >
+            <div class="col-sm-12">
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Data </label>
+                        <input type="text" class="form-control" id="data_c" style="max-width: 65%;"  ng-model="ag.data_c">
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Tipo Tratamento:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1">
+                            <option  value="0">Todas</option>
+                            <option ng-repeat="La in ListTratamento"  ng-value="La.chave"  >{{La.nm_tipo_tratamento}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Unidade:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="ag.unidade" ng-change="getSelectMedicos()">
+                             <option ng-repeat="Lb in ListUnidade"  ng-value="Lb.chave"  >{{Lb.nm_unidade_atendimento}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Prestador:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="ag.medico" ng-change="getSelcCadeiras()">
+                            <option ng-repeat="Lc in ListMedico"  ng-value="Lc.chave"  >{{Lc.nm_prestador}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                  <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="name">Cadeira:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="ag.cadeira" ng-change="getAgendaDia()" >
+                            <option ng-repeat="Ld in ListCadeiras"  ng-value="Ld.cadeira" ng-mousedown="getAgendaDia()" >{{Ld.cadeira}}</option>
+                        </select>
+                    </div>
+                </div>
+                
+           
+            </div>
+
+         </div>
+         <div class=" Wbox-main" >
+            <div class="col-md-8 Wbox-Caledar-List">
+                 <table class="table table-bordered table-striped table-condensed tabela-agenda">
+                        <!-- <thead>  <tr>  <th>Hora</th> <th>Agenda</th> </tr>  </thead> -->
+                        <tbody>
+                            <tr  ng-repeat="LAG in ListAgendaDaddos"  >
+                                <td style="width: 13%" class="lb-font-a" >{{LAG.hora}}</td>
+                                    <td ng-class="LAG.addcss" >
+                                        <div class="col-md-7 agendaInfoPact">
+                                            <div  ng-if="LAG.dados.length > 1" class="h7 m-a-0 "><label ng-class="LAG.addcss_daados">{{LAG.dados}} a {{LAG.BT_chegou}}</label></div>
+                                            <div  ng-if="LAG.tel.length > 5"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.tel}}</small></div>
+                                            <div  ng-if="LAG.observac.length > 5"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.observac}}</small></div>
+                                            <div  ng-if="LAG.espcialidd.length > 1"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.espcialidd}}</small></div>
+                                            
+                                        </div>
+                                        <div class="col-md-5 agendaInfoPact-Butons">
+                                            <div class="agenda-action-icons ico-shaw">
+                                                <div class="col-md-8">
+                                                    <i ng-if="LAG.BT_chegou" class="icon-home icons " title="Paciente Chegou"></i>
+                                                    
+                                                    
+                                                    <span ng-if="LAG.BT_faltou" class="fa-stack agd-ico-ft2" title="Paciente faltou">
+                                                        <i class="fa fa-user-o fa-stack-1x"></i>
+                                                        <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                                                    </span>
+                                                    
+                                                    <i ng-if="LAG.BT_cacelarConslt" class="fa fa-times agd-ico-ft" title="Cancelar Atendimento"  aria-hidden="true"></i>
+                                                </div>
+                                                <div class="col-md-4 ag-ico-2" >
+                                                    <i class="fa fa-credit-card-alt" title="Ver/Pagamento Paciente" aria-hidden="true"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+
+            </div>
+
+             <div class="col-md-4 Wbox-main-rigth">
+                    <div class="card">
+                        <div class="card-header bgC CF ">
+                            <strong>Calendário</strong>
+                        </div>
+
+                        <div class="card-block pd0">
+                            <div class="Agendacaledario"> 
+                                <div class="AgendacaledarioDp">
+                                    <div  id="datepicker"  ></div>
+                                </div>
+                                <div class="Agendacaledariobnt " >
+                                    <div class="form-group agenda-bt-1">
+                                                <label for="name">Informe a data:</label>
+                                                <input type="text" class="form-control" id="data_b" placeholder="Data" ng-model="ag.data_b" >
+                                                <button type="button" class="btn btn-success agenda-bt-2">Carregar</button>
+                                            </div>    
+
+                                </div>
+                                <input type="hidden" id="my_hidden_input" ng-model="ag.data_a">
+                            </div>
+                            
+                        </div>
+                        <div class="card-header bgC CF">
+                            <strong>Legenda</strong>
+                            
+                        </div>
+                        <div class="card-block pd0">
+                            <div class="agenda-legenda">
+                                <label> <span class="agendaColor-1 agendaInfoL" >Aa</span> Ficha rápida</label> <br>
+                                <label> <span class="agendaColor-2 agendaInfoL" >Aa</span> Paciente compareceu a clínica</label> <br>
+                                <label> <span class="agendaColor-3 agendaInfoL" >Aa</span> Fez pagamento hoje</label><br>
+                                <label> <span class="agendaColor-4 agendaInfoL" >Aa</span> Já atendido em outra data neste mês</label><br>
+                                <label> <span class="agendaColor-5 agendaInfoL" >Aa</span> Paciente faltou</label> <br>
+                                <label> <span class="agendaColor-6 agendaInfoL" >Aa</span>	Atendido sem procedimento com observação</label><br>
+                                <label> <span class="agendaColor-7 agendaInfoL" >Aa</span>	Atendido com procedimento</label><br>
+                                <label> <span class="agendaColor-8 agendaInfoL" >Aa</span>	Compromisso Prestador</label><br>
+                                
+                                
+                            </div>
+                        </div>
+
+                    </div>
+
+                
+            </div>
+         </div>
+
+        </div>
+    </div>
+   
+
+                           

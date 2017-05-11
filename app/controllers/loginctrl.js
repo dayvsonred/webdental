@@ -49,7 +49,7 @@ angular.module("portal").controller("loginCtrl", function ($scope, simpleService
                     if(data.data.dados.length > 0){
                         console.log("senha ok");
                         $scope.ListClinicas =  angular.copy(data.data.dados);
-                        $scope.ShowMsgSusses();
+                        $scope.ShowMsgSusses('msgLogar');
                         $scope.senhaOk = true;
                         $("#idClinicas" ).focus();
 
@@ -65,16 +65,16 @@ angular.module("portal").controller("loginCtrl", function ($scope, simpleService
         console.log(idClinica + " - "+ clinica);
 
         $scope.frm.clinicaSelec = clinica;
-        $scope.frm.clinica = clinica;
+        //$scope.frm.clinica = clinica;
         $scope.frm.IdClinica = idClinica;
        
     };
 
 
-    $scope.ShowMsgSusses = function(clinica) {
-        $("#msgLogar").addClass("AddBlock");
-        $("#msgLogar").addClass("showSimplesEFEC");
-        $timeout(function () { $("#msgLogar").removeClass("AddBlock");  $("#msgLogar").removeClass("showSimplesEFEC"); }, 3500);
+    $scope.ShowMsgSusses = function(id) {
+        $("#"+id).addClass("AddBlock");
+        $("#"+id).addClass("showSimplesEFEC");
+        $timeout(function () { $("#"+id).removeClass("AddBlock");  $("#"+id).removeClass("showSimplesEFEC"); }, 3500);
     };
   
 
@@ -93,6 +93,9 @@ angular.module("portal").controller("loginCtrl", function ($scope, simpleService
         //$window.sessionStorage.setItem("SavedString","I'm a value saved with SessionStorage");
         if($scope.senhaOk){
             $location.path('/menu/');
+        }else{
+            console.log("erro msg");
+             $scope.ShowMsgSusses('msgLogarErro');
         }
 
     };
