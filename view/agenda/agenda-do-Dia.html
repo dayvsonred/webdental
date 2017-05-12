@@ -83,7 +83,9 @@
                                 <td style="width: 13%" class="lb-font-a" >{{LAG.hora}}</td>
                                     <td ng-class="LAG.addcss" >
                                         <div class="col-md-7 agendaInfoPact">
-                                            <div  ng-if="LAG.dados.length > 1" class="h7 m-a-0 "><label ng-class="LAG.addcss_daados">{{LAG.dados}} a {{LAG.BT_chegou}}</label></div>
+
+                                            <!-- INFORMAÇÔES DO PACIENTE -->
+                                            <div  ng-if="LAG.dados.length > 1" class="h7 ag-nome m-a-0 "><label ng-class="LAG.addcss_daados">{{LAG.dados}}</label></div>
                                             <div  ng-if="LAG.tel.length > 5"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.tel}}</small></div>
                                             <div  ng-if="LAG.observac.length > 5"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.observac}}</small></div>
                                             <div  ng-if="LAG.espcialidd.length > 1"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.espcialidd}}</small></div>
@@ -92,18 +94,22 @@
                                         <div class="col-md-5 agendaInfoPact-Butons">
                                             <div class="agenda-action-icons ico-shaw">
                                                 <div class="col-md-8">
+
+                                                    <!-- BT PACIENTE CHEGOU -->
                                                     <i ng-if="LAG.BT_chegou" class="icon-home icons " title="Paciente Chegou"></i>
                                                     
-                                                    
+                                                    <!-- BT PACIENTE FALTOU -->
                                                     <span ng-if="LAG.BT_faltou" class="fa-stack agd-ico-ft2" title="Paciente faltou">
                                                         <i class="fa fa-user-o fa-stack-1x"></i>
                                                         <i class="fa fa-ban fa-stack-2x text-danger"></i>
                                                     </span>
-                                                    
-                                                    <i ng-if="LAG.BT_cacelarConslt" class="fa fa-times agd-ico-ft" title="Cancelar Atendimento"  aria-hidden="true"></i>
+
+                                                    <!-- BT CANCELAR CONSULTA  -->
+                                                    <i ng-if="LAG.BT_cacelarConslt" class="fa fa-times agd-ico-ft" title="Cancelar Atendimento" ng-click="CancelAtendimento(LAG)"  aria-hidden="true"></i>
+
                                                 </div>
                                                 <div class="col-md-4 ag-ico-2" >
-                                                    <i class="fa fa-credit-card-alt" title="Ver/Pagamento Paciente" aria-hidden="true"></i>
+                                                    <i ng-if="LAG.BT_cartaoFinanceiro" class="fa fa-money" title="Ver/Pagamento Paciente" aria-hidden="true"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -169,4 +175,43 @@
     </div>
    
 
-                           
+ <!-- MODALS  -->
+
+<!-- Modal CANCELAR CONSULTA -->
+<div class="modal fade" id="MDCacelConsult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bgC CF">
+        <h5 class="modal-title" id="exampleModalLabel">Cancelameto de Agendamento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h5>Paciente: {{MD.nomePaciet}}</h5>
+        <div class="col-md-12">
+            Quen Cancelou: 
+        </div>
+        <div class="col-md-12 FTZ-16">
+
+            <label class="radio-inline" for="inline-radio1">
+                <input type="radio" id="inline-radio1" name="inline-radios" ng-model="MD.quem_cancelou" value="C"> Clinica
+            </label>
+            <label class="radio-inline" for="inline-radio2">
+                <input type="radio" id="inline-radio2" name="inline-radios" ng-model="MD.quem_cancelou" value="F"> Prestador
+            </label>
+            <label class="radio-inline" for="inline-radio3">
+                <input type="radio" id="inline-radio3" name="inline-radios" ng-model="MD.quem_cancelou" value="A"> Paciente
+            </label>
+            <label class="radio-inline" for="inline-radio3">
+                <input type="radio" id="inline-radio3" name="inline-radios" ng-model="MD.quem_cancelou" value="E"> Erro Cadastro
+            </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Fecha</button> -->
+        <button type="button" class="btn btn-outline-primary"  ng-disabled="MD.quem_cancelou == null" ng-click="ConfirmaCancelAtendimento()" >Confirmar Cancelamento</button>
+      </div>
+    </div>
+  </div>
+</div>              

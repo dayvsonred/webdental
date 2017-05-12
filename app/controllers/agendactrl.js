@@ -6,12 +6,15 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     $scope.ClinicaObj = {
         logado : true
     };
+    $scope.Pg = {
+        nome:  'Agendamento - Cancelar Horário'
+    };
     $scope.ClinicDados = {};
     $scope.ClinicHoraFunciona = {};
     $scope.ClinicMedicoAtendimento = {};
     $scope.GridHoraAgenda = {};
     $scope.GridDadosBD = {};
-
+    $scope.MD = {}; //Objeto para os Modals
 
     $scope.SelectedUnidMed = {
                             unidade : "",
@@ -264,7 +267,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
       $scope.GridDadosDefault = function() {
             Object.keys($scope.ListAgendaDaddos).map(function (key) {
                 $scope.ListAgendaDaddos[key].dados = "Prestador não atende neste horário";
-                 $scope.ListAgendaDaddos[key].addcss_daados = '';
+                $scope.ListAgendaDaddos[key].KeyList= key; // propia chave do array para localizar dados
+                $scope.ListAgendaDaddos[key].addcss_daados = '';
                 $scope.ListAgendaDaddos[key].addcss =  "bgPrestNAtende";
                 //$scope.ListAgendaDaddos[key].addcss =  "bgPrestNAtende";
                 $scope.ListAgendaDaddos[key].tel = '';
@@ -272,6 +276,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 $scope.ListAgendaDaddos[key].BT_chegou = false;
                 $scope.ListAgendaDaddos[key].BT_faltou = false;
                 $scope.ListAgendaDaddos[key].BT_cacelarConslt = false;
+                $scope.ListAgendaDaddos[key].BT_cartaoFinanceiro = false;
             });
       };
 
@@ -327,6 +332,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         Object.keys($scope.ListAgendaDaddos).map(function (key) {
 
             if( $scope.ListAgendaDaddos[key].hora == obj.hora_agenda ){
+                $scope.ListAgendaDaddos[key].GridKey = GridKey; // para saber dasdos BD completo do paciente/Consulta $scope.GridDadosBD[GridKey]
                 $scope.ListAgendaDaddos[key].dados = obj.nome;
                 $scope.ListAgendaDaddos[key].addcss_daados = 'lb-shad-a';
                 $scope.ListAgendaDaddos[key].addcss =  "";
@@ -335,6 +341,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 $scope.ListAgendaDaddos[key].BT_chegou = false;
                 $scope.ListAgendaDaddos[key].BT_faltou = false;
                 $scope.ListAgendaDaddos[key].BT_cacelarConslt = false;
+                $scope.ListAgendaDaddos[key].BT_cartaoFinanceiro = false;
+                
                 
 
             /**
@@ -434,10 +442,10 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
       */
      $scope.GridAbilitarBotoes = function(GrindList,GridBDDados) {
         console.log("GridAbilitarBotoes");
-        console.log(GrindList);
-        console.log(GridBDDados);
-        console.log($scope.ListAgendaDaddos[GrindList]);
-        console.log($scope.GridDadosBD[GridBDDados]);
+        //console.log(GrindList);
+        //console.log(GridBDDados);
+        //console.log($scope.ListAgendaDaddos[GrindList]);
+        //console.log($scope.GridDadosBD[GridBDDados]);
       
         /**
          * exibe Botão Chegou / Botão Faltou
@@ -445,25 +453,93 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         if(($scope.GridDadosBD[GridBDDados].situacao == null || $scope.GridDadosBD[GridBDDados].situacao == 'C'  ) && ($scope.GridDadosBD[GridBDDados].faltou == null)){
                 $scope.ListAgendaDaddos[GrindList].BT_chegou = true;
                 console.log("true *********************************************************************************");
-                if($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) ){
+                if(!$scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) ){
                       console.log("true *********************************************************************************");
                       $scope.ListAgendaDaddos[GrindList].BT_faltou = true;
+                      $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
                 }
         }
         /**
          * exibe Botão Cancelar 
          */
-        if(($scope.GridDadosBD[GridBDDados].situacao == 'B' || $scope.GridDadosBD[GridBDDados].situacao == 'E'  ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda))){
+        console.log($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) );
+        if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'B') || ($scope.GridDadosBD[GridBDDados].situacao == 'E')  )  && ($scope.GridDadosBD[GridBDDados].faltou == null)  && (!$scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda))){
             $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
+            $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
         }
+
+        if(($scope.GridDadosBD[GridBDDados].situacao != null)  && ($scope.GridDadosBD[GridBDDados].faltou == null)) {
+            $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+        }
+        
      };
 
 
 
+    /**
+     * Ação de cancelar consulta marcada
+     * Invocada polo usuario 
+     * BT Cancelar Atendimento
+     * Regra > nao permite cancelar um dia apos a data da consulta
+     * 
+     *  set cancelado = 'S',
+        dt_ultima_edicao='2017-05-12 13:38:09',
+        datahora_cancelamento = '2017-05-12 13:38:09', 
+        quem_cancelou='C',
+        usuario_cancelou = 'L00500020160620140212' 
+        where chave = 'L02600020170406182832'
+     */
+    $scope.CancelAtendimento = function(LAG) {
+        console.log("CancelAtendimento");
+        console.log(LAG);
+        console.log("list");
+        console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+        console.log("BD");
+        console.log($scope.GridDadosBD[LAG.GridKey]);
+         console.log("USER");
+        console.log($scope.UserDados);
 
 
+        $scope.MD.nomePaciet = $scope.GridDadosBD[LAG.GridKey].nome;
+        $scope.MD.chave =  $scope.GridDadosBD[LAG.GridKey].chave;
+        $scope.MD.USERID = $scope.UserDados.chave;
+        $scope.MD.quem_cancelou = null;
+        $scope.MD.PGnome = $scope.Pg.nome;
+        $scope.MD.usuario_cancelou = $scope.UserDados.chave;
+        
+        $scope.OpenCloseModalById('MDCacelConsult');
+    };
+    $scope.ConfirmaCancelAtendimento = function() {
+        console.log("ConfirmaCancelAtendimento");
+         console.log($scope.MD);
+        if($scope.MD.chave != null && $scope.MD.quem_cancelou != null){
+                AgendaService.setCancelAtendimento($scope.MD)
+                .then(function (data) {
+                    
+                   console.log(" get ConfirmaCancelAtendimento retorno");  console.log(data); console.log(data.data);
+                    //console.log(data.data.dados[0]);
+                    //console.log(data.data.confg[0]);
+                    if(data.data.dados == 'cancelado'){
+                        $scope.getAgendaDia(); //Mudar para apena aterar os estatus - nao buscar do back
+                    } 
+                    $scope.OpenCloseModalById('MDCacelConsult');
+            });
 
-     $scope.getMedicoDados = function() {
+        }
+    }
+
+
+    /**
+     * Abre ou fecha modal,  pelo ID
+     */
+    $scope.OpenCloseModalById = function(id) {
+        //console.log("modal open/Close");
+        id = "#"+id; $(id).modal('toggle');
+    };
+
+    
+
+    $scope.getMedicoDados = function() {
           //console.log(" get getMedicoDados " );
           //console.log($scope.ag);
           //$scope.SelectedUnidMed

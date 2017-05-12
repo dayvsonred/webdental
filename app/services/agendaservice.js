@@ -32,6 +32,10 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/GetMedicoDados",  data);
     };
 
+    this.setCancelAtendimento = function (data) {
+        return $http.post(config.baseUrl + "/api/SetCancelAtendimento",  data);
+    };
+
     
 
 

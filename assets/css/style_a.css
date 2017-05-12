@@ -18,6 +18,9 @@
 .h7{
     font-size: 0.9rem;
 }
+.FTZ-16{
+    font-size: 16;
+}
 
 .bordRadi3{
     border-radius: 3px;
@@ -322,6 +325,7 @@
     padding-right:12;
 }
 
+
 .agendaInfoPact small{
     /*margin-left: 20px;*/
     
@@ -350,13 +354,18 @@
     cursor: pointer;
     color:  black; /*green;*/
 }
+.ag-nome{
+        /*font-weight: 900;*/
+}
 
 .agd-ico-ft{
     font-size: 30;
 }
 .agd-ico-ft2{   
     font-size: 18;
+    margin-top: -9;
 }
+
 
 
 .AtendFichaRapd, .css_ficharapida
