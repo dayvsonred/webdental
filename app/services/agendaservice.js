@@ -6,6 +6,7 @@ angular.module("portal").service("AgendaService", function ($http, config) {
 
     this.getSelcUnidade = function (data) {
         return $http.post(config.baseUrl + "/api/GetSelcUnidade",  data);
+
     };
 
     this.getDadosUser = function (data) {
@@ -36,6 +37,13 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/SetCancelAtendimento",  data);
     };
 
+    this.getDadosConultaCompleta = function (data) {
+        return $http.post(config.baseUrl + "/api/GetDadosConultaCompleta",  data);
+    };
+
+    this.getMotivoAtendimento = function () {
+        return $http.get(config.baseUrl + "/api/GetMotivoAtendimento");
+    };
     
 
 

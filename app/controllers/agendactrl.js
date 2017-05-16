@@ -1,4 +1,4 @@
-angular.module("portal").controller("agendaCtrl", function ($scope, AgendaService, $location, config, $sessionStorage) {
+angular.module("portal").controller("agendaCtrl", function ($scope, AgendaService, $location, config, $sessionStorage, $timeout) {
     $scope.app = "portal";
     $scope.contatos = [];
     $scope.Usuario = [];
@@ -198,6 +198,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     $scope.GridDadosDefault();
                     $scope.AddHoraAtendMedicoConfig();
                     $scope.GridAddCosultsMarcadas();
+                    $scope.getMotivoAtendimento();
             });
     };
 
@@ -452,9 +453,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
          */
         if(($scope.GridDadosBD[GridBDDados].situacao == null || $scope.GridDadosBD[GridBDDados].situacao == 'C'  ) && ($scope.GridDadosBD[GridBDDados].faltou == null)){
                 $scope.ListAgendaDaddos[GrindList].BT_chegou = true;
-                console.log("true *********************************************************************************");
+                //console.log("true *********************************************************************************");
                 if(!$scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) ){
-                      console.log("true *********************************************************************************");
+                      //console.log("true *********************************************************************************");
                       $scope.ListAgendaDaddos[GrindList].BT_faltou = true;
                       $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
                 }
@@ -462,12 +463,12 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         /**
          * exibe Botão Cancelar 
          */
-        console.log($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) );
-        if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'B') || ($scope.GridDadosBD[GridBDDados].situacao == 'E')  )  && ($scope.GridDadosBD[GridBDDados].faltou == null)  && (!$scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda))){
-            $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
-            $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+        //console.log($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) );
+        if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'B') || ($scope.GridDadosBD[GridBDDados].situacao == 'E') ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) && ($scope.GridDadosBD[GridBDDados].faltou == null) ) ){
+                console.log("2");
+                $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
+                $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
         }
-
         if(($scope.GridDadosBD[GridBDDados].situacao != null)  && ($scope.GridDadosBD[GridBDDados].faltou == null)) {
             $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
         }
@@ -496,7 +497,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         console.log($scope.ListAgendaDaddos[LAG.KeyList]);
         console.log("BD");
         console.log($scope.GridDadosBD[LAG.GridKey]);
-         console.log("USER");
+        console.log("USER");
         console.log($scope.UserDados);
 
 
@@ -515,7 +516,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         if($scope.MD.chave != null && $scope.MD.quem_cancelou != null){
                 AgendaService.setCancelAtendimento($scope.MD)
                 .then(function (data) {
-                    
+
                    console.log(" get ConfirmaCancelAtendimento retorno");  console.log(data); console.log(data.data);
                     //console.log(data.data.dados[0]);
                     //console.log(data.data.confg[0]);
@@ -527,6 +528,116 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
         }
     }
+
+
+    /**
+     * Abre modal com Dados da consulta
+     * Se o horario tem agenda -> abre dados do agendamento
+     * Se nao tem exibe formulario para nova agenda
+     */
+     $scope.ShowAtendimento = function(LAG) {
+        console.log("ShowAtendimento");
+        console.log("Usiario clicado");
+        console.log(LAG);
+        if(LAG.dados != "" ){
+            console.log("exite dados");
+            console.log("list");
+            console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+            console.log("BD");
+            console.log($scope.GridDadosBD[LAG.GridKey]);
+            console.log("USER");
+            console.log($scope.UserDados);
+             
+
+            // nome
+            // observacao
+            $scope.MD.data_agenda = $scope.GridDadosBD[LAG.GridKey].data_agenda;
+            $scope.MD.hora_agenda =  $scope.GridDadosBD[LAG.GridKey].hora_agenda;
+            $scope.MD.duracao_agenda =  $scope.GridDadosBD[LAG.GridKey].duracao_agenda;
+
+            $scope.MD.cd_prestador =  $scope.GridDadosBD[LAG.GridKey].cd_prestador;
+            $scope.MD.num_telefone1 =  $scope.GridDadosBD[LAG.GridKey].num_telefone1;
+
+            
+            $scope.MD.observacao =  $scope.GridDadosBD[LAG.GridKey].observacao;
+            $scope.MD.nome =  $scope.GridDadosBD[LAG.GridKey].nome;
+            $scope.getMedicoNome($scope.GridDadosBD[LAG.GridKey].cd_prestador,$scope.MD);
+            $scope.getTipoTratamentoNome($scope.GridDadosBD[LAG.GridKey].cd_tipo_tratamento,$scope.MD);
+            $scope.getUnidadeNome($scope.GridDadosBD[LAG.GridKey].cd_unidade,$scope.MD);
+
+            
+
+
+            if(typeof $scope.ListMotivoAtendimento == 'undefined'){
+                    AgendaService.getMotivoAtendimento()
+                        .then(function (data) {
+                                $scope.ListMotivoAtendimento = angular.copy(data.data.dados);
+                                Object.keys($scope.ListMotivoAtendimento).map(function (key) {
+                                        if( $scope.ListMotivoAtendimento[key].chave == $scope.GridDadosBD[LAG.GridKey].cd_motivo_agendamento){
+                                            $scope.MD.nome_motivo_atendimento =  $scope.ListMotivoAtendimento[key].nm_motivo_atendimento;
+                                        }
+                                });
+                     });
+
+            }else{
+                Object.keys($scope.ListMotivoAtendimento).map(function (key) {
+                            if( $scope.ListMotivoAtendimento[key].chave == $scope.GridDadosBD[LAG.GridKey].cd_motivo_agendamento){
+                                $scope.MD.nome_motivo_atendimento =  $scope.ListMotivoAtendimento[key].nm_motivo_atendimento;
+                            }
+                    });
+            }
+
+
+
+            //GET DADOS COMPLETOS DA CONSULTA RESTANTES
+            var iten = {
+                           "funcionario": $scope.GridDadosBD[LAG.GridKey].funcionario,
+                           "paciente": $scope.GridDadosBD[LAG.GridKey].cd_paciente
+                         };
+           $scope.getDadosConultaCompleta(iten);
+    
+
+
+
+
+             //$scope.getNomePrestador(id,obj);
+            $scope.OpenCloseModalById('MDDadosConsult');
+
+        }else{
+            console.log("cadastra nova consulta");
+        }
+    };
+    
+
+    $scope.getMotivoAtendimento = function() {
+        //console.log("getMotivoAtendimento");
+               AgendaService.getMotivoAtendimento()
+                .then(function (data) {
+                   //console.log("get getMotivoAtendimento retorno");  console.log(data); console.log(data.data);
+                        $scope.ListMotivoAtendimento = angular.copy(data.data.dados);
+              });
+    };
+
+
+    $scope.getDadosConultaCompleta = function(obj) {
+        console.log("getDadosConultaCompleta");
+        console.log(obj);
+               AgendaService.getDadosConultaCompleta(obj)
+                .then(function (data) {
+                   console.log("get getDadosConultaCompleta retorno");  console.log(data); console.log(data.data);
+                        
+                        console.log(data.data.funcionario[0].nm_prestador);
+                        console.log(data.data.paciente[0].prontuario);
+                        $scope.MD.nome_funcionario_cadastro = data.data.funcionario[0].nm_prestador;
+                        $scope.MD.prontuario = data.data.paciente[0].num_matricula;
+                        
+                        //obj.nomePrestado = data.data.dados;
+            });
+    };
+
+   
+
+
 
 
     /**
@@ -549,6 +660,70 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     //$scope.ListCadeiras = angular.copy(data.data.dados);
             });
     };
+
+
+
+
+    /**
+     * Loop para encontra valor equivalente a chave enviada
+     * TODOS PODEN SER SUBSTITUIDOS POR APENAS 1
+     * ANALIZAR DESEMPENHO
+     */
+
+    $scope.getMedicoNome = function(id,obj) {
+         Object.keys($scope.ListMedico).map(function (key) {
+                    if( $scope.ListMedico[key].chave == id){
+                        
+                        obj.nome_medico =  $scope.ListMedico[key].nm_prestador;
+                    }
+            });
+    }
+    
+    $scope.getTipoTratamentoNome = function(id,obj) {
+         Object.keys($scope.ListTratamento).map(function (key) {
+                if( $scope.ListTratamento[key].chave == id){
+                    obj.nome_tipo_tratamento =  $scope.ListTratamento[key].nm_tipo_tratamento;
+                }
+            });
+    }
+    
+    $scope.getUnidadeNome = function(id,obj) {
+        console.log("getUnidadeNome");
+        console.log($scope.ListUnidade);
+         Object.keys($scope.ListUnidade).map(function (key) {
+                if( $scope.ListUnidade[key].chave == id){
+                    obj.nome_unidade =  $scope.ListUnidade[key].nm_unidade_atendimento;
+                }
+            });
+    }
+
+    
+
+
+
+    /**
+     * NAO ESTA SENDO USADO
+     * Verifica se o array com as lista de atyendimentos esta criado
+     * se nao estiver chama a função para criar
+     * add ao obj enviado o valor nome da chave
+     */
+    $scope.getMotivoAtendimentoNome = function(id,obj) {
+         console.log("getMotivoAtendimentoNome");
+        if(typeof $scope.ListMotivoAtendimento == 'undefined'){
+            $scope.getMotivoAtendimento();
+            console.log("go");
+        }else{
+             Object.keys($scope.ListMotivoAtendimento).map(function (key) {
+                    console.log( $scope.ListMotivoAtendimento[key].chave +" == "+ id );
+                        if( $scope.ListMotivoAtendimento[key].chave == id){
+                            obj.nome_motivo_atendimento =  $scope.ListMotivoAtendimento[key].nm_motivo_atendimento;
+                        }
+                });
+        }
+    };
+
+
+     
 
 
     $scope.getDadosUser = function() {
