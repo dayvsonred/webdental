@@ -44,6 +44,23 @@ angular.module("portal").service("AgendaService", function ($http, config) {
     this.getMotivoAtendimento = function () {
         return $http.get(config.baseUrl + "/api/GetMotivoAtendimento");
     };
+
+    this.getMedicoTratamentos = function (data) {
+        return $http.post(config.baseUrl + "/api/GetMedicoTratamentos", data);
+    };
+
+    this.getListPacienteForString = function (data) {
+        return $http.post(config.baseUrl + "/api/GetListPacienteForString", data);
+    };
+
+    this.insertConsultaGrid = function (data) {
+        return $http.post(config.baseUrl + "/api/InsertConsultaGrid", data);
+    };
+    
+
+    
+    
+
     
 
 

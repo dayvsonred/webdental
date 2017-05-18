@@ -330,11 +330,11 @@
 }
 
 
-.agendaInfoPact small{
+.agendaInfoPact,  .agendaInfoPact>div,  .agendaInfoPact>div>label{
     /*margin-left: 20px;*/
-    
-    
+    cursor: pointer;
 }
+
 
 .tabela-agenda{
     
@@ -370,6 +370,23 @@
     margin-top: -9;
 }
 
+.MDCadConsultCorp{
+    min-height: 400px;
+}
+.MDCardConsultTabela tbody>tr>td {
+    word-wrap: break-word;
+    text-align: left;
+    
+}
+.MDCardConsultTabela tbody>tr:hover {
+    background-color: rgba(0, 97, 0, 0.64);
+    cursor: pointer;
+}
+
+.MDCardConsultSubTabela{
+    max-height: 278;
+    overflow-y: auto;
+}
 
 
 .AtendFichaRapd, .css_ficharapida
