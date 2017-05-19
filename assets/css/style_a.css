@@ -249,7 +249,6 @@
     float: left;
     padding: 5 15;
     border-right: 1px solid #f4f4f4;
-    
 }
 
 .Wbox-itens a:hover{
@@ -362,6 +361,23 @@
         /*font-weight: 900;*/
 }
 
+.ag-form-brock-top{
+    border-top:     1px solid #cfd8dc;
+    border-left:    1px solid #cfd8dc;
+    border-right:   1px solid #cfd8dc;
+}
+.ag-form-brock-sub{
+    border-bottom:  1px solid #cfd8dc;
+    border-left:    1px solid #cfd8dc;
+    border-right:   1px solid #cfd8dc;
+    
+}
+
+.ag-form-fp-tt{
+    background-color: rgba(217, 83, 79, 0.82) !important;
+    color: #fff !important;
+}
+
 .agd-ico-ft{
     font-size: 30;
 }
@@ -391,7 +407,7 @@
 
 .AtendFichaRapd, .css_ficharapida
 .agendaColor-1 {
-    background-color : #FF0099;
+    background-color : rgba(210, 25, 110, 0.77);
     color: #fff !important;
 }
 

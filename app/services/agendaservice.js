@@ -56,6 +56,12 @@ angular.module("portal").service("AgendaService", function ($http, config) {
     this.insertConsultaGrid = function (data) {
         return $http.post(config.baseUrl + "/api/InsertConsultaGrid", data);
     };
+
+    this.setFichaRapida = function (data) {
+        return $http.post(config.baseUrl + "/api/SetFichaRapida", data);
+    };
+
+    
     
 
     

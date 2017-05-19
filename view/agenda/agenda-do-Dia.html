@@ -462,7 +462,70 @@
                             </tr>
                         </tbody>
                     </table>
-            </div>       
+
+            </div>  
+            
+
+            <!-- ***********************************************************************
+                *
+                * FORMULARIO FICHA RAPIDA
+                *
+            **************************************************************************** --> 
+
+            <div ng-if="MD.TabelaTopTXT == true"  class="card-block ">
+                <div class="card-header ag-form-brock-top ag-form-fp-tt">
+                    <strong>Novo Paciente</strong>
+                    <!--<small>Form</small> --> 
+                </div>
+                <div class="card-block ag-form-brock-sub">
+                    <div class="Wbox-itens_2" >
+                        <div class="col-md-12">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="name">Nome*: </label>
+                                    <input type="text" class="form-control"  ng-model="MD.fp_nome"   >
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="name">Sobrenome*: </label>
+                                    <input type="text" class="form-control" ng-model="MD.fp_sobrenome" >
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Telefone 1*: </label>
+                                    <input type="text" class="form-control" ng-model="MD.fp_tel_1" >
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Telefone 2*: </label>
+                                    <input type="text" class="form-control" ng-model="MD.fp_tel_2" >
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="name">Sexo*: </label>
+                                     <select id="select_fr_sex" name="select_fr_sex" class="form-control input-lg" size="1" ng-model="MD.fp_sexo"  >
+                                        <option value="M" >Masculino</option>
+                                        <option value="F" >Feminino</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center" >   <!-- data-dismiss="modal" fecha modal se no botao--> 
+                            <button type="button" class="btn btn-outline-success" ng-click="cadastraFichaRapda()">Cadastrar e Agendar</button>
+                        </div>
+                    </div>
+                    
+                    <!--/row-->
+                </div>
+            </div>
+
         </div>
 
 
