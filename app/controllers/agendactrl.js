@@ -173,12 +173,25 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
      * Busca da API as cadeiras que o medico atende e os horaios que ele atende naquele dia
      */
      $scope.getSelcCadeiras = function() {
-          console.log(" get getSelcCadeiras -> " + $scope.ag  );
+          console.log(" get getSelcCadeiras" );
           //console.log($scope.ag);
           //$scope.SelectedUnidMed
           AgendaService.getSelcCadeiras($scope.ag)
                 .then(function (data) {
                     //console.log(" get getSelcCadeiras retorno"); console.log(data); console.log(data.data);
+                    //console.log(data.data.dados);
+
+                    /**
+                     * Faço um loop no array de cadeira, para cada valor de cadeira adiciono mais um no array de values (cadeiraValue)
+                     * tranformo cadeiras 4,6,7 em 0,1,2 
+                     * o banco de dados esta adapitado a este modelo 
+                     */
+                     Object.keys(data.data.dados).map(function (key) {
+                        //console.log(ArrayCaderias[key].cadeira);
+                        data.data.dados[key].cadeiraValue = key;
+                        
+                    });
+
                     $scope.ListCadeiras = angular.copy(data.data.dados);
                     $scope.ClinicMedicoConfig = angular.copy(data.data.medicconfig);
                     $scope.getAgendaDia();
@@ -186,13 +199,18 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     };
 
 
+
+
     $scope.getAgendaDia = function() {
           console.log(" get getAgendaDia " );
-          //console.log($scope.ag);
+          console.log($scope.ag);
+          //console.log($scope.ag.cadeira);
+          //$scope.cadeiraValueSecelctd = $scope.ag.cadeira.cadeiraValue;
+          //$scope.ag.cadeira = $scope.ag.cadeira.cadeira;
           //$scope.SelectedUnidMed
           AgendaService.getAgendaDia($scope.ag)
                 .then(function (data) {
-                    //console.log(" get getAgendaDia retorno"); console.log(data); console.log(data.data.dados);
+                    console.log(" get getAgendaDia retorno"); console.log(data); console.log(data.data.dados);
                     //$scope.ListCadeiras = angular.copy(data.data.dados);
                     $scope.GridDadosBD = data.data.dados;
                     $scope.AddValueAgendaHora();
@@ -204,16 +222,19 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     };
 
 
+
     /**
      * Apos buscar a configuraçao do medico no banco, fixo os horarios de atendimento do medico no Grid
      * Função verifica cadeira selecionada e seta horario de funcionamento
      */
      $scope.AddHoraAtendMedicoConfig = function() {
           console.log("AddHoraAtendMedicoConfig");
+          console.log($scope.ag);
          ///$scope.NaoATDAgendaHora(iniHora,FinHora,addClass);
-         if($scope.ag.cadeira !== undefined){
+         if($scope.ag.cadeira != null){
             Object.keys($scope.ClinicMedicoConfig).map(function (key) {
-                if($scope.ClinicMedicoConfig[key].cadeira ==  $scope.ag.cadeira){
+               //if($scope.ClinicMedicoConfig[key].cadeira ==  $scope.ag.cadeira){
+                   if($scope.ClinicMedicoConfig[key].cadeira ==  $scope.ag.cadeira.cadeira){
                    // console.log($scope.ClinicMedicoConfig[key].cadeira );
                    // console.log($scope.ClinicMedicoConfig[key].horario_inicio );
                    // console.log($scope.ClinicMedicoConfig[key].horario_fim );
@@ -279,6 +300,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 $scope.ListAgendaDaddos[key].BT_faltou = false;
                 $scope.ListAgendaDaddos[key].BT_cacelarConslt = false;
                 $scope.ListAgendaDaddos[key].BT_cartaoFinanceiro = false;
+                $scope.ListAgendaDaddos[key].BT_convertPacient = false;
+                
             });
       };
 
@@ -481,6 +504,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                                  //console.log($scope.ListAgendaDaddos[next]);
 
                                   var iten = {
+                                        'BT_convertPacient':false,
                                         'BT_cacelarConslt':false,
                                         'BT_cartaoFinanceiro':false,
                                         'BT_chegou':false,
@@ -535,7 +559,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     if(!$scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) ){
                         //console.log("true *********************************************************************************");
                         $scope.ListAgendaDaddos[GrindList].BT_faltou = true;
-                        $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+                        //$scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
                     }
             }
             /**
@@ -545,15 +569,87 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'B') || ($scope.GridDadosBD[GridBDDados].situacao == 'E') ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) && ($scope.GridDadosBD[GridBDDados].faltou == null)  ){
                     //console.log("2");
                     $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
-                    $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+                    //$scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
             }
-            if(($scope.GridDadosBD[GridBDDados].situacao != null)  && ($scope.GridDadosBD[GridBDDados].faltou == null)) {
+
+            /**
+             * exibe Botão Financeiro
+             */
+            if(($scope.GridDadosBD[GridBDDados].situacao != null)  && ($scope.GridDadosBD[GridBDDados].faltou == null) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) ) {
                 $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
             }
+
+
+
+            /**
+             * exibe Botão PARA TESTE
+             */
+
+            $scope.ListAgendaDaddos[GrindList].BT_faltou = true;
+            $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
+            $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+            $scope.ListAgendaDaddos[GrindList].BT_convertPacient = true;
+            
 
         };
         
      };
+
+
+     /**
+      * Converte emn paciente ficharapda
+      */
+      $scope.ShowModalConvertPaciente = function(LAG) {
+        console.log("ShowModalConvertPaciente");
+        console.log("Usiario clicado");
+        console.log(LAG);
+        //console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+        console.log($scope.GridDadosBD[LAG.GridKey]);
+      
+        //console.log("USER");
+        //console.log($scope.UserDados);
+        $scope.MD = {};
+        $scope.OpenCloseModalById('MDConvertPacient');
+
+        
+
+
+      };
+     
+
+      $scope.cadastraPacientFichaRapda = function() {
+        console.log("CadastraPacientFichaRapda");
+        console.log($scope.MD);
+
+        AgendaService.cadastraPacientFichaRapda($scope.MD)
+                .then(function (data) {
+                    console.log(" set CadastraPacientFichaRapda retorno"); console.log(data); console.log(data.data.dados);
+                   
+            });
+
+
+
+      }
+
+
+      /**
+       * Efeito Nav de troca (Modal converte paciente)
+       */
+      $scope.navActivPessoais= function() {
+            $('#MdPessoaois').addClass('active');
+            $('#MdPessoaois_link').addClass('active');
+            $('#MdComprement_link').removeClass('active');
+            $('#MdComprement').removeClass('active');
+            
+      };
+      $scope.navActivComplemetar= function() {
+                $('#MdPessoaois').removeClass('active');
+                $('#MdPessoaois_link').removeClass('active');
+                $('#MdComprement_link').addClass('active');
+                $('#MdComprement').addClass('active');
+                
+      };
+
 
 
 
@@ -687,8 +783,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             $scope.MD = {};
             $scope.MD.TabelaTopTXT = false;
 
-            /*Abre MODAL Nova consulta */
-            $scope.OpenCloseModalById('MDNovaConsult');
+            
 
             //console.log(LAG);
             //console.log("USER");
@@ -719,9 +814,15 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
             $scope.MD.medico = $scope.ag.medico;
             $scope.MD.unidade = $scope.ag.unidade;
-            $scope.MD.cadeira = $scope.ag.cadeira;
+            $scope.MD.cadeira = $scope.ag.cadeira.cadeira;
+            $scope.MD.cadeiraValue = $scope.ag.cadeira.cadeiraValue; // adcionado depois 
 
-            
+
+
+            /*Abre MODAL Nova consulta */
+            $scope.OpenCloseModalById('MDNovaConsult');
+            console.log($scope.MD);
+
 
         }
     };
@@ -779,7 +880,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
                    // console.log($scope.MD); 
                     $scope.MD.cd_paciente = obj.chave;
-                    $scope.MD.cadeiraValue = '0'; // desenvolver metodo para altera valor da cadeira para 0 ou 1 ....
+                    $scope.MD.cadeiraValue =  $scope.ag.cadeira.cadeiraValue; //'0'; // desenvolver metodo para altera valor da cadeira para 0 ou 1 ....
                     AgendaService.insertConsultaGrid($scope.MD)
                     .then(function (data) {
                         //console.log("get InsertConsultaGrid retorno ****************");  console.log(data); console.log(data.data);
@@ -966,6 +1067,11 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
              AgendaService.setFichaRapida($scope.MD)
                 .then(function (data) {
                     console.log(" get cadastraFichaRapda retorno"); console.log(data); console.log(data.data);
+                     $scope.getAgendaDia();
+                     
+                     
+                     /*FECHA MODAL Nova consulta FICHARAPDA */
+                    $scope.OpenCloseModalById('MDNovaConsult');
                     
             });
         }else{
@@ -995,7 +1101,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     $scope.AlteradoDia = function(){
         console.log("AlteradoDia");
         console.log($scope.ag);
-        if(($scope.ag.data_a != null ) && ($scope.ag.unidade != null ) && ($scope.ag.medico != null )   && ($scope.ag.cadeira != null ) ){
+        if(($scope.ag.data_a != null ) && ($scope.ag.unidade != null ) && ($scope.ag.medico != null )   && ($scope.ag.cadeira.cadeira != null ) ){
             $scope.getSelcCadeiras();
         }
         if(($scope.ag.data_a != null ) && ($scope.ag.unidade != null )){

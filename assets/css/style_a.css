@@ -404,6 +404,15 @@
     overflow-y: auto;
 }
 
+.card-header-bordes{
+    border-left: 1px solid #cfd8dc;
+    border-right: 1px solid #cfd8dc;
+    border-top: 1px solid #cfd8dc;
+    margin-top: 6;
+}
+
+
+
 
 .AtendFichaRapd, .css_ficharapida
 .agendaColor-1 {
@@ -449,6 +458,15 @@
 .agendaColor-8{
     background-color : #BDBDBD;
     color: #fff !important;
+}
+
+.agenda-form-Mdcpc{
+    height: 55px;
+        display: block;
+}
+
+.agenda-form-Mdcpc div>div{
+    margin-bottom: 4px !important;
 }
 
 .col-st-data{

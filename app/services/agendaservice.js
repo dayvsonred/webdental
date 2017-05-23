@@ -61,6 +61,12 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/SetFichaRapida", data);
     };
 
+    this.cadastraPacientFichaRapda = function (data) {
+        return $http.post(config.baseUrl + "/api/CadastraPacientFichaRapda", data);
+    };
+
+    
+
     
     
 
