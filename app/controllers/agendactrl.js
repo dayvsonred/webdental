@@ -609,27 +609,52 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         //console.log("USER");
         //console.log($scope.UserDados);
         $scope.MD = {};
+        $scope.MD.nome = $scope.GridDadosBD[LAG.GridKey].nm_paciente;
+        $scope.MD.sobrenome = $scope.GridDadosBD[LAG.GridKey].sobrenome;
+        $scope.MD.duracao = LAG.duracao;
+        $scope.MD.hora = LAG.hora;
+        $scope.MD.observac = LAG.observac;
+        $scope.MD.sexo = $scope.GridDadosBD[LAG.GridKey].sexo;
+        $scope.MD.tel1 = $scope.GridDadosBD[LAG.GridKey].num_telefone1;
+        $scope.MD.tel2 = $scope.GridDadosBD[LAG.GridKey].num_telefone2;
+        $scope.MD.GridKey = LAG.GridKey;
+        $scope.MD.KeyList = LAG.KeyList;
+
+
         $scope.OpenCloseModalById('MDConvertPacient');
 
         
-
-
       };
      
 
       $scope.cadastraPacientFichaRapda = function() {
         console.log("CadastraPacientFichaRapda");
+        
+        console.log("Clinica Dados");
+        console.log($scope.ClinicDados);
+
+        $scope.MD.cd_filial =  $scope.ClinicDados.cd_unidade_atendimento;
+        $scope.MD.grupo_unidades = $scope.ClinicDados.grupo_unidades;
+        $scope.MD.paciente_unidade = $scope.ClinicDados.paciente_unidade;
+        
+         // alterar pagina permiçoes  #*
+        $scope.MD.USERID = $scope.UserDados.chave;
+        $scope.MD.PGnome = "Paciente";
+        $scope.MD.PGTela = "Paciente"; 
+
+        $scope.MD.medico = $scope.ag.medico;
+        $scope.MD.unidade = $scope.ag.unidade;
+        $scope.MD.cadeira = $scope.ag.cadeira.cadeira;
+        $scope.MD.cadeiraValue = $scope.ag.cadeira.cadeiraValue; // adcionado depois 
+
+        console.log("DADOS DO MODAL A ENVIAR");
         console.log($scope.MD);
 
         AgendaService.cadastraPacientFichaRapda($scope.MD)
                 .then(function (data) {
-                    console.log(" set CadastraPacientFichaRapda retorno"); console.log(data); console.log(data.data.dados);
-                   
-            });
-
-
-
-      }
+                    console.log(" set CadastraPacientFichaRapda retorno"); console.log(data); console.log(data.data);
+                });
+      };
 
 
       /**

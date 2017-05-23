@@ -555,7 +555,7 @@
 
 
 
-<!-- Modal Exibe Dados Consulta -->
+<!-- Modal CONVERTE FUNCIONARIO FICHARAPDA -->
 <div class="modal fade" id="MDConvertPacient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
   <div class="modal-dialog md-Full" role="document">
     <div class="modal-content">
@@ -590,20 +590,20 @@
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="name">Nome*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.nome"   >
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="name">Sobrenome*:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.sobrenome" >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <label for="name">Sexo*: </label>
-                                <select id="select_fr_sex" name="select_fr_sex" class="form-control input-lg" size="1" ng-model="MD.fp_sexo"  >
-                                    <option value="M" >Masculino</option>
-                                    <option value="F" >Feminino</option>
+                                <select id="select_fr_sex" name="select_fr_sex" class="form-control input-lg" size="1" ng-model="MD.sexo"  >
+                                    <option ng-value="M" >Masculino</option>
+                                    <option ng-value="F" >Feminino</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -615,7 +615,10 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Filhos*:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                     <select id="MDfilhos" name="MDfilho" class="form-control input-lg" size="1" ng-model="MD.filhos"  >
+                                    <option ng-value="M" >Masculino</option>
+                                    <option ng-value="F" >Feminino</option>
+                                </select>
                                 </div>
                             </div>
                         </div>
@@ -625,25 +628,25 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">CPF*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.cpf"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">RG: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.rg"   >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Nome do Pai*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.nome_pai"   >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Nome da Mãe*:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.nome_mae" >
                                 </div>
                             </div>
                         </div>
@@ -653,25 +656,25 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Nacionalidade*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.nacionalidade"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Naturalidade: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.narturalidade"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Cor: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.cor_pele"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Tipo de Indicação:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.indicacao" >
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -978,7 +981,7 @@
 
       <div class="modal-footer ">
           <div class="col-md-12" >
-            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="CadastraPacientFichaRapda()">Adicionar</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="cadastraPacientFichaRapda()">Adicionar</button>
             
             <button type="button" class="btn btn-warning bt-color-a">Cancelar</button>
           </div>
