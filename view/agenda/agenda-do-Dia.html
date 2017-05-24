@@ -560,7 +560,7 @@
   <div class="modal-dialog md-Full" role="document">
     <div class="modal-content">
       <div class="modal-header bgC CF">
-        <h5 class="modal-title" id="exampleModalLabel4">Cancelameto de Agendamento</h5>
+        <h5 class="modal-title" id="exampleModalLabel4">Novo Paciente</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -602,23 +602,23 @@
                             <div class="col-md-2">
                                 <label for="name">Sexo*: </label>
                                 <select id="select_fr_sex" name="select_fr_sex" class="form-control input-lg" size="1" ng-model="MD.sexo"  >
-                                    <option ng-value="M" >Masculino</option>
-                                    <option ng-value="F" >Feminino</option>
+                                    <option value="M" >Masculino</option>
+                                    <option value="F" >Feminino</option>
                                 </select>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Nascimento*:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" id="data_MD_1" ng-model="MD.data_nacimento" >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Filhos*:</label>
                                      <select id="MDfilhos" name="MDfilho" class="form-control input-lg" size="1" ng-model="MD.filhos"  >
-                                    <option ng-value="M" >Masculino</option>
-                                    <option ng-value="F" >Feminino</option>
-                                </select>
+                                        <option value="N" >Nao</option>
+                                        <option value="S" >Sim</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -628,24 +628,24 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">CPF*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.cpf"   >
+                                    <input type="text" class="form-control"  ng-model="MD.CPF"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">RG: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.rg"   >
+                                    <input type="text" class="form-control"  ng-model="MD.RG"   >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="name">Nome do Pai*: </label>
+                                    <label for="name">Nome do Pai: </label>
                                     <input type="text" class="form-control"  ng-model="MD.nome_pai"   >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="name">Nome da Mãe*:</label>
+                                    <label for="name">Nome da Mãe:</label>
                                     <input type="text" class="form-control" ng-model="MD.nome_mae" >
                                 </div>
                             </div>
@@ -655,7 +655,7 @@
                         <div class="row agenda-form-Mdcpc"   >
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="name">Nacionalidade*: </label>
+                                    <label for="name">Nacionalidade: </label>
                                     <input type="text" class="form-control"  ng-model="MD.nacionalidade"   >
                                 </div>
                             </div>
@@ -668,7 +668,12 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Cor: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.cor_pele"   >
+                                    <select id="MDfilhos" name="MDfilho" class="form-control input-lg" size="1" ng-model="MD.cor_pele"  >
+                                        <option value="A">Amarelo</option>
+                                        <option value="B">Branco</option>
+                                        <option value="N">Negro</option>
+                                        <option value="P">Pardo</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-2">
@@ -690,37 +695,43 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Operadora*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <select  class="form-control input-lg" size="1" ng-model="MD.OP_tel1"  >
+                                        <option ng-repeat="lv in ListOperadoraCel" ng-value="lv.chave" >{{lv.nm_operadora}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Telefone*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.tel1"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Operadora: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <select  class="form-control input-lg" size="1" ng-model="MD.OP_tel2"  >
+                                        <option ng-repeat="lx in ListOperadoraCel" ng-value="lx.chave" >{{lx.nm_operadora}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Telefone:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.tel2" >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Operadora: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <select  class="form-control input-lg" size="1" ng-model="MD.OP_tel3"  >
+                                        <option ng-repeat="ly in ListOperadoraCel" ng-value="ly.chave" >{{ly.nm_operadora}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Telefone:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.tel3" >
                                 </div>
                             </div>
                         </div>
@@ -730,25 +741,28 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">E-Mail*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.email"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Renda Familiar*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="number" class="form-control"  ng-model="MD.rendaFamilia"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Dia do Pagamento*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="number" class="form-control"  ng-model="MD.diaPagamento"   >
                                 </div>
                             </div>
                              <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Trabalha C/*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <select id="select_fr_sex" name="select_fr_sex" class="form-control input-lg" size="1" ng-model="MD.pagChecBoleto"  >
+                                        <option value="c" >CHEQUE E/OU CARTÃO</option>
+                                        <option value="n" >NOTA E/OU BOLETO</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -757,54 +771,56 @@
                         <div class="row agenda-form-Mdcpc" >
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="name">Preencher endereço: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label for="name">Cep: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <label for="name">Cep*: </label>
+                                    <input type="text" class="form-control"  ng-model="MD.CEP" ng-enter="getCepViaCep(MD.CEP)"  >
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <label for="name">UF*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <label for="name">UF: </label>
+                                    <select  class="form-control input-lg" size="1"  ng-value="MD.UF" ng-model="MD.UF"  >
+                                        <option  value="AC">AC</option><option  value="AL">AL</option><option  value="AP">AP</option><option  value="AM">AM</option>
+                                        <option  value="BA">BA</option><option  value="CE">CE</option><option  value="DF">DF</option><option  value="ES">ES</option>
+                                        <option  value="GO">GO</option><option  value="MA">MA</option><option  value="MT">MT</option><option  value="MS">MS</option>
+                                        <option  value="MG">MG</option><option  value="PA">PA</option><option  value="PB">PB</option><option  value="PR">PR</option>
+                                        <option  value="PE">PE</option><option  value="PI">PI</option><option  value="RJ">RJ</option><option  value="RN">RN</option>
+                                        <option  value="RS">RS</option><option  value="RO">RO</option><option  value="RR">RR</option><option  value="SC">SC</option>
+                                        <option  value="SP">SP</option><option  value="SE">SE</option><option  value="TO">TO</option>
+                                    </select>
                                 </div>
                             </div>
                              <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="name">Cidade*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <label for="name">Cidade: </label>
+                                    <input type="text" class="form-control"  ng-model="MD.CepCidade"   >
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name">Bairro*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <label for="name">Bairro: </label>
+                                    <input type="text" class="form-control"  ng-model="MD.CepBairro"   >
                                 </div>
                             </div>
                         </div>
 
 
                          <div class="row agenda-form-Mdcpc" >
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Endereço*: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.CepEndereco"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="name">Nº: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <label for="name">Nº*: </label>
+                                    <input type="text" class="form-control"  ng-model="MD.CepNumero"   >
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Complemento: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.CepComplement"   >
                                 </div>
                             </div>
                         </div>
@@ -827,19 +843,19 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Nome Paciente Webvidas: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.webv_nome_titular"   >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Convênio:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.webv_convenio" >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Tabela:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.webv_tabela" >
                                 </div>
                             </div>
                         </div>
@@ -848,19 +864,19 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Nome Paciente Titular: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.TitularPaciente" >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">CPF Titular:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.CPFTitular" >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Prontuário:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.TitularProntuar" >
                                 </div>
                             </div>
                         </div>
@@ -877,25 +893,30 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Estado Civil: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                        <select  class="form-control input-lg" size="1"  ng-value="MD.UF" ng-model="MD.EstadoCivil"  >
+                                        <option value="L00000020100620202848">Solteiro(a)</option>
+                                        <option  value="L00000020100620202847">Casado(a)</option>
+                                        <option value="L00000020100620202849">Divorciado(a)</option>
+                                        <option  value="L00000020100620202850">Viuvo(a)</option>
+                                        </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Nome do Cônjuge:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.conjugNome" >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">CPF do Cônjuge:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.conjugCPF" >
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="name">Profissão do Cônjuge:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.conjugProficao" >
                                 </div>
                             </div>
                         </div>
@@ -913,19 +934,19 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Profissão: </label>
-                                    <input type="text" class="form-control"  ng-model="MD.dia_select"   >
+                                    <input type="text" class="form-control"  ng-model="MD.profissao"   >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Local de Trabalho:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.localTrabalho" >
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="name">Horário:</label>
-                                    <input type="text" class="form-control" ng-model="MD.hora_select" >
+                                    <input type="text" class="form-control" ng-model="MD.horaTrabalho" >
                                 </div>
                             </div>
                               <div class="col-md-6">

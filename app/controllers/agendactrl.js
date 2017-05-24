@@ -14,6 +14,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     $scope.ClinicMedicoAtendimento = {};
     $scope.GridHoraAgenda = {};
     $scope.GridDadosBD = {};
+    $scope.ListOperadoraCel = {};
     $scope.MD = {}; //Objeto para os Modals
 
     $scope.SelectedUnidMed = {
@@ -382,7 +383,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 }else if(obj.faltou == "F"){
                             AddClassSit = "AtendidoFalto";
                         
-                }else if( obj.cd_pacficharapida != null){
+                }else if( obj.cd_pacficharapida != null && obj.cd_pacficharapida != ""){
                             AddClassSit = "AtendFichaRapd";
                 }
                 //console.log(obj.cd_pacficharapida);
@@ -605,6 +606,12 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         console.log(LAG);
         //console.log($scope.ListAgendaDaddos[LAG.KeyList]);
         console.log($scope.GridDadosBD[LAG.GridKey]);
+
+        /**
+         * Busca Operados de celular cadastrada no sistema
+         * para exibus no select do modal
+         */
+        $scope.getOperadorasCelular();
       
         //console.log("USER");
         //console.log($scope.UserDados);
@@ -619,41 +626,97 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         $scope.MD.tel2 = $scope.GridDadosBD[LAG.GridKey].num_telefone2;
         $scope.MD.GridKey = LAG.GridKey;
         $scope.MD.KeyList = LAG.KeyList;
+        $scope.MD.cd_pacficharapida = $scope.GridDadosBD[LAG.GridKey].cd_pacficharapida;
+        $scope.MD.cd_prestador = $scope.GridDadosBD[LAG.GridKey].cd_prestador;
+        $scope.MD.cd_motivo_agendamento = $scope.GridDadosBD[LAG.GridKey].cd_motivo_agendamento;
+        $scope.MD.cd_unidade = $scope.GridDadosBD[LAG.GridKey].cd_unidade;
+        $scope.MD.funcionario = $scope.GridDadosBD[LAG.GridKey].funcionario;
+        $scope.MD.data_agenda = $scope.GridDadosBD[LAG.GridKey].data_agenda;
 
+        
+        
+        
+        
 
+          
         $scope.OpenCloseModalById('MDConvertPacient');
 
+        $scope.ModalItensIniFP(); 
         
       };
      
+     /**
+     * Busca Operados de celular cadastrada no sistema
+     */
+     $scope.getOperadorasCelular = function() {
+         console.log("getOperadorasCelular");
+           AgendaService.getOperadorasCelular()
+                    .then(function (data) {
+                        console.log(" set getOperadorasCelular retorno"); console.log(data); console.log(data.data);
+                        $scope.ListOperadoraCel = data.data.dados;
+                    });
+     }
 
       $scope.cadastraPacientFichaRapda = function() {
         console.log("CadastraPacientFichaRapda");
-        
-        console.log("Clinica Dados");
-        console.log($scope.ClinicDados);
-
-        $scope.MD.cd_filial =  $scope.ClinicDados.cd_unidade_atendimento;
-        $scope.MD.grupo_unidades = $scope.ClinicDados.grupo_unidades;
-        $scope.MD.paciente_unidade = $scope.ClinicDados.paciente_unidade;
-        
-         // alterar pagina permiçoes  #*
-        $scope.MD.USERID = $scope.UserDados.chave;
-        $scope.MD.PGnome = "Paciente";
-        $scope.MD.PGTela = "Paciente"; 
-
-        $scope.MD.medico = $scope.ag.medico;
-        $scope.MD.unidade = $scope.ag.unidade;
-        $scope.MD.cadeira = $scope.ag.cadeira.cadeira;
-        $scope.MD.cadeiraValue = $scope.ag.cadeira.cadeiraValue; // adcionado depois 
 
         console.log("DADOS DO MODAL A ENVIAR");
         console.log($scope.MD);
+        console.log($scope.MD.data_nacimento);
 
-        AgendaService.cadastraPacientFichaRapda($scope.MD)
-                .then(function (data) {
-                    console.log(" set CadastraPacientFichaRapda retorno"); console.log(data); console.log(data.data);
-                });
+        /**
+         * VERIFICO SE OS CAMPOS ESTAO PREENCHIDOS
+         * OBS.: FORMULARIO MUITO GRANDE
+         */
+        if(( typeof $scope.MD.nome != 'undefined') && ($scope.MD.nome != '') &&
+            ( typeof $scope.MD.sobrenome != 'undefined') && ($scope.MD.sobrenome != '') &&
+            ( typeof $scope.MD.data_nacimento != 'undefined') && ($scope.MD.data_nacimento != '') &&
+            ( typeof $scope.MD.CPF != 'undefined') && ($scope.MD.CPF != '') &&
+            ( typeof $scope.MD.OP_tel1 != 'undefined') && ($scope.MD.OP_tel1 != '') &&
+            ( typeof $scope.MD.email != 'undefined') && ($scope.MD.email != '') &&
+            ( typeof $scope.MD.rendaFamilia != 'undefined') && ($scope.MD.rendaFamilia != '') &&
+            ( typeof $scope.MD.diaPagamento != 'undefined') && ($scope.MD.diaPagamento != '') &&
+            ( typeof $scope.MD.CEP != 'undefined') && ($scope.MD.CEP != '') &&
+            ( typeof $scope.MD.CepNumero != 'undefined') && ($scope.MD.CepNumero != '') &&
+            ( typeof $scope.MD.pagChecBoleto != 'undefined') && ($scope.MD.pagChecBoleto != '') &&
+            ( typeof $scope.MD.filhos != 'undefined') && ($scope.MD.filhos != '') &&
+            ( typeof $scope.MD.CepEndereco != 'undefined') && ($scope.MD.CepEndereco != '')
+          )
+          {
+            console.log("campos preenchidos OK");
+            console.log($scope.ClinicDados);
+
+
+            $scope.MD.cd_filial =  $scope.ClinicDados.cd_unidade_atendimento;
+            $scope.MD.grupo_unidades = $scope.ClinicDados.grupo_unidades;
+            $scope.MD.paciente_unidade = $scope.ClinicDados.paciente_unidade;
+            
+            // alterar pagina permiçoes  #*
+            $scope.MD.USERID = $scope.UserDados.chave;
+            $scope.MD.PGnome = "Paciente";
+            $scope.MD.PGTela = "Paciente"; 
+
+            $scope.MD.medico = $scope.ag.medico;
+            $scope.MD.unidade = $scope.ag.unidade;
+            $scope.MD.cadeira = $scope.ag.cadeira.cadeira;
+            $scope.MD.cadeiraValue = $scope.ag.cadeira.cadeiraValue; // adcionado depois 
+
+            console.log("DADOS DO MODAL A ENVIAR");
+            console.log($scope.MD);
+
+                AgendaService.cadastraPacientFichaRapda($scope.MD)
+                        .then(function (data) {
+                            console.log(" set CadastraPacientFichaRapda retorno"); console.log(data); console.log(data.data);
+                            $scope.getAgendaDia(); //Mudar para apena aterar os estatus - nao buscar do back
+                        });
+
+        }else{
+            /**
+             * DADOS INVALIDOS OU INCOMPLETOS
+             */
+            $window.alert("Preencha os campos obrigatorios");
+        }
+
       };
 
 
@@ -789,12 +852,14 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
 
 
-            //GET DADOS COMPLETOS DA CONSULTA RESTANTES
-            var iten = {
-                           "funcionario": $scope.GridDadosBD[LAG.GridKey].funcionario,
-                           "paciente": $scope.GridDadosBD[LAG.GridKey].cd_paciente
-                         };
-           $scope.getDadosConultaCompleta(iten);
+            //GET DADOS COMPLETOS DA CONSULTA RESTANTES (SE NAO E FICHA RAPDA)
+           if($scope.GridDadosBD[LAG.GridKey].cd_paciente != null){
+                var iten = {
+                            "funcionario": $scope.GridDadosBD[LAG.GridKey].funcionario,
+                            "paciente": $scope.GridDadosBD[LAG.GridKey].cd_paciente
+                            };
+            $scope.getDadosConultaCompleta(iten);
+           }
     
 
 
@@ -1135,6 +1200,28 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     };
 
 
+     $scope.getCepViaCep = function(cep) {
+         console.log("getCepViaCep");
+         console.log(cep);
+            $scope.MD.UF = '';
+            $scope.MD.CepCidade = '';
+            $scope.MD.CepBairro = '';
+            $scope.MD.CepEndereco = '';
+            $scope.MD.CepValido = false;
+         AgendaService.getCepViaCep(cep)
+                .then(function (data) {
+                    console.log(" get getCepViaCep retorno"); //console.log(data); console.log(data.data);
+                    if(data.status == 200){
+                        $scope.MD.UF = data.data.uf
+                        $scope.MD.CepCidade = data.data.localidade
+                        $scope.MD.CepBairro = data.data.bairro
+                        $scope.MD.CepEndereco = data.data.logradouro
+                        $scope.MD.CepValido = true;
+                    }
+            });
+     };
+
+
     /**
      * Retorna True se Hora (00:00) enviada maior que agora
      */
@@ -1175,6 +1262,16 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
 
 
+     $scope.ModalItensIniFP = function() {
+            $('#data_MD_1').datepicker({
+                format: 'dd/mm/yyyy',                
+                language: 'pt-BR',
+                todayHighlight: true,
+            });
+
+     };
+
+
     $('#datepicker').datepicker({
         format: 'dd/mm/yyyy',                
         language: 'pt-BR',
@@ -1209,6 +1306,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     $scope.getDadosUser();
     $scope.getSelcTratamento();
     $scope.getSelcUnidade();
+    
     
     
     

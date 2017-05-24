@@ -65,6 +65,15 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/CadastraPacientFichaRapda", data);
     };
 
+    this.getCepViaCep = function (data) {
+        return $http.get("http://viacep.com.br/ws/"+ data + "/json");
+    };
+
+    this.getOperadorasCelular = function () {
+        return $http.post(config.baseUrl + "/api/GetOperadorasCelular");
+    };
+    
+
     
 
     
