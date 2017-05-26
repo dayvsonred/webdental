@@ -1061,12 +1061,9 @@
                  <div class="col-sm-4  pd-l-0">
                     <div class="form-group">
                         <label for="name">Financeiro: </label>
-                         <select  class="form-control input-lg" ng-value="MD.UF" ng-model="MD.EstadoCivil"  >
-                            <option value="L00000020100620202848">Solteiro(a)</option>
-                            <option  value="L00000020100620202847">Casado(a)</option>
-                            <option value="L00000020100620202849">Divorciado(a)</option>
-                            <option  value="L00000020100620202850">Viuvo(a)</option>
-                         </select>
+                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.finacSelect"  >
+                            <option ng-repeat="fa in listFinacTratamentos" ng-value="fa.chave" >{{fa.dt}}</option>
+                        </select>
                     </div>
                  </div>
 
@@ -1104,7 +1101,16 @@
                             <th width="6%" >Cartao</th>
                             <th width="6%" >Baixa</th>
                             <th width="6%" >Situação</th>
+
                         </tr>
+
+                        <tr ng-repeat="lu in ListGrid" ng-click="GridAddConsulta(lu)" >
+                                <td  > {{lu.nome}}</td> <!-- cpf -->
+                                <td  > {{lu.numero}} </td>
+                                <td  > {{lu.num_telefone1}} </td>
+                                <td   > {{lu.tipo}} </td>
+                                <td  > {{lu.nm_unidade_atendimento}} </td>
+                            </tr>
                     </thead>
                 </table>
             </div>

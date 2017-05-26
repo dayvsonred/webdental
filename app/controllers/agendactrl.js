@@ -642,6 +642,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         $scope.OpenCloseModalById('MDConvertPacient');
 
         $scope.ModalItensIniFP(); 
+
         
       };
      
@@ -1091,10 +1092,12 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     obj.nome_unidade =  $scope.ListUnidade[key].nm_unidade_atendimento;
                 }
             });
-    }
+    };
 
 
-
+    /**
+     * BUSCA DADOS FINANCEIRO DO PACIENTE APOS ABRIR MODAL FINACEIRO
+     */
     /**
      * ABRE MODAL FINACEIRO
      */
@@ -1107,7 +1110,11 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
         //console.log("USER");
         //console.log($scope.UserDados);
+
+        //INICIALIZA OBJETOS MANIPOULADOS NO MODAL
         $scope.MD = {};
+        $scope.PacienteFinanceiro = {};
+
         $scope.MD.nome = $scope.GridDadosBD[LAG.GridKey].nm_paciente;
         $scope.MD.sobrenome = $scope.GridDadosBD[LAG.GridKey].sobrenome;
 
@@ -1127,6 +1134,18 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         
         $scope.MD.USERID = $scope.UserDados.chave;
         $scope.MD.PGnome = $scope.Pg.nome;
+
+        
+        $scope.MD.cd_paciente = $scope.GridDadosBD[LAG.GridKey].cd_paciente;
+
+
+         console.log("getFinanceiroPaciente");
+            AgendaService.getFinanceiroPaciente($scope.MD)
+                .then(function (data) {
+                    console.log(" get getFinanceiroPaciente retorno"); console.log(data); console.log(data.data);
+                    $scope.listFinacTratamentos = angular.copy(data.data.dados);
+            });
+
     
         console.log($scope.MD);
 

@@ -73,6 +73,12 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/GetOperadorasCelular");
     };
 
+    this.getFinanceiroPaciente = function (data) {
+        return $http.post(config.baseUrl + "/api/GetFinanceiroPacienteAG", data);
+    };
+
+    
+
 
     
 
