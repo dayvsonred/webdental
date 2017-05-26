@@ -683,7 +683,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             ( typeof $scope.MD.CepEndereco != 'undefined') && ($scope.MD.CepEndereco != '')
           )
           {
-            console.log("campos preenchidos OK");
+            console.log("campos preenchidos OK  jjj");
             console.log($scope.ClinicDados);
 
 
