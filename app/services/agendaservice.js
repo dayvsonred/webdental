@@ -72,6 +72,8 @@ angular.module("portal").service("AgendaService", function ($http, config) {
     this.getOperadorasCelular = function () {
         return $http.post(config.baseUrl + "/api/GetOperadorasCelular");
     };
+
+
     
 
     

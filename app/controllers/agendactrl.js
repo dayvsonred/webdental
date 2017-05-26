@@ -190,12 +190,12 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                      Object.keys(data.data.dados).map(function (key) {
                         //console.log(ArrayCaderias[key].cadeira);
                         data.data.dados[key].cadeiraValue = key;
-                        
                     });
 
                     $scope.ListCadeiras = angular.copy(data.data.dados);
                     $scope.ClinicMedicoConfig = angular.copy(data.data.medicconfig);
                     $scope.getAgendaDia();
+                    
             });
     };
 
@@ -863,7 +863,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     
 
 
-
+           console.log($scope.MD);
 
              //$scope.getNomePrestador(id,obj);
             $scope.OpenCloseModalById('MDDadosConsult');
@@ -916,6 +916,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
         }
     };
+
+
+
 
     /**
      * DO MODAL NOVA CONSULTA
@@ -1090,6 +1093,48 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             });
     }
 
+
+
+    /**
+     * ABRE MODAL FINACEIRO
+     */
+    $scope.ShowModFinanceiro = function(LAG) {
+        console.log("ShowModFinanceiro");
+        console.log("Usiario clicado");
+        console.log(LAG);
+        //console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+        console.log($scope.GridDadosBD[LAG.GridKey]);
+
+        //console.log("USER");
+        //console.log($scope.UserDados);
+        $scope.MD = {};
+        $scope.MD.nome = $scope.GridDadosBD[LAG.GridKey].nm_paciente;
+        $scope.MD.sobrenome = $scope.GridDadosBD[LAG.GridKey].sobrenome;
+
+        $scope.MD.A5nomePaciente = $scope.MD.nome +" "+ $scope.MD.sobrenome;
+
+        $scope.MD.GridKey = LAG.GridKey;
+        $scope.MD.KeyList = LAG.KeyList;
+
+        $scope.MD.cd_unidade = $scope.GridDadosBD[LAG.GridKey].cd_unidade;
+        $scope.MD.funcionario = $scope.GridDadosBD[LAG.GridKey].funcionario;
+        $scope.MD.data_agenda = $scope.GridDadosBD[LAG.GridKey].data_agenda;
+
+        
+        $scope.MD.cd_filial =  $scope.ClinicDados.cd_unidade_atendimento;
+        $scope.MD.grupo_unidades = $scope.ClinicDados.grupo_unidades;
+        $scope.MD.paciente_unidade = $scope.ClinicDados.paciente_unidade;
+        
+        $scope.MD.USERID = $scope.UserDados.chave;
+        $scope.MD.PGnome = $scope.Pg.nome;
+    
+        console.log($scope.MD);
+
+          
+        $scope.OpenCloseModalById('MDDadosFinanceiro');
+
+    };
+
     
 
 
@@ -1165,17 +1210,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     
             });
         }else{
-
             $window.alert("Preencha os campos para cadastra a ficha rápida");
-
         }
-        
-        
-
-
-          
-
-
     };
 
 

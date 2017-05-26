@@ -29,7 +29,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Data </label>
-                        <input type="text" class="form-control" id="data_c" style="max-width: 65%;"  ng-model="ag.data_c">
+                        <input type="text" class="form-control" id="data_c"   ng-model="ag.data_c">
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
                 </div>
 
                 <div class="col-sm-2">
-                    <div class="form-group">
+                    <div class="form-group "> 
                         <label for="name">Prestador:</label>
                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="ag.medico" ng-change="getSelcCadeiras()">
                             <option ng-repeat="Lc in ListMedico"  ng-value="Lc.chave"  >{{Lc.nm_prestador}}</option>
@@ -111,7 +111,7 @@
                                                 </div>
                                                 <div class="col-md-4 ag-ico-2" >
                                                         <!-- BT FINANCEIRO  -->
-                                                    <i ng-if="LAG.BT_cartaoFinanceiro" class="fa fa-money" title="Ver/Pagamento Paciente" aria-hidden="true"></i>
+                                                    <i ng-if="LAG.BT_cartaoFinanceiro" class="fa fa-money" title="Ver/Pagamento Paciente" ng-click="ShowModFinanceiro(LAG)" aria-hidden="true"></i>
                                                     
                                                         <!-- BT CONVERTE EM PACIENTE  -->
                                                     <i ng-if="LAG.BT_convertPacient" class="icon-like icons" title="Converte em Paciente" ng-click="ShowModalConvertPaciente(LAG)" ></i>
@@ -184,7 +184,7 @@
                     MODALS  
 ********************************************************-->
 
-<!-- Modal CANCELAR CONSULTA -->
+<!-- Modal CANCELAR CONSULTA  ##################################################################### -->
 <div class="modal fade" id="MDCacelConsult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -226,7 +226,7 @@
 
 
 
-<!-- Modal Exibe Dados Consulta -->
+<!-- Modal Exibe Dados Consulta  ##################################################################### -->
 <div class="modal fade" id="MDDadosConsult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
   <div class="modal-dialog md-Full" role="document">
     <div class="modal-content">
@@ -364,7 +364,7 @@
 
 
 
-<!-- Modal CADASTRA NOVA CONSULTA -->
+<!-- Modal CADASTRA NOVA CONSULTA  ##################################################################### -->
 <div class="modal fade" id="MDNovaConsult" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog md-Full" role="document">
     <div class="modal-content">
@@ -555,7 +555,7 @@
 
 
 
-<!-- Modal CONVERTE FUNCIONARIO FICHARAPDA -->
+<!-- Modal CONVERTE FUNCIONARIO FICHARAPDA  ##################################################################### -->
 <div class="modal fade" id="MDConvertPacient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
   <div class="modal-dialog md-Full" role="document">
     <div class="modal-content">
@@ -894,10 +894,10 @@
                                 <div class="form-group">
                                     <label for="name">Estado Civil: </label>
                                         <select  class="form-control input-lg" size="1"  ng-value="MD.UF" ng-model="MD.EstadoCivil"  >
-                                        <option value="L00000020100620202848">Solteiro(a)</option>
-                                        <option  value="L00000020100620202847">Casado(a)</option>
-                                        <option value="L00000020100620202849">Divorciado(a)</option>
-                                        <option  value="L00000020100620202850">Viuvo(a)</option>
+                                            <option value="L00000020100620202848">Solteiro(a)</option>
+                                            <option  value="L00000020100620202847">Casado(a)</option>
+                                            <option value="L00000020100620202849">Divorciado(a)</option>
+                                            <option  value="L00000020100620202850">Viuvo(a)</option>
                                         </select>
                                 </div>
                             </div>
@@ -1013,3 +1013,171 @@
 </div>              
 
 
+
+
+<!-- Modal FINANCEIRO - Conta Corrente Paciente  ##################################################################### -->
+<div class="modal fade" id="MDDadosFinanceiro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5" aria-hidden="true">
+  <div class="modal-dialog md-Full" role="document">
+    <div class="modal-content">
+      <div class="modal-header bgC CF">
+        <h5 class="modal-title" id="exampleModalLabel5">Conta Corrente Paciente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <div class="Wbox-itens_3" >
+            <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">NOME PACIENTE:</label>
+                        <input type="text" class="form-control" ng-model="MD.A5nomePaciente" ng-disabled="true" >
+                    </div>
+            </div>
+
+            <div class="col-md-12 finamBt_1">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" > 
+                            <span class="fa-stack ">
+                                <i class="fa fa-circle fa-stack-2x  "></i>
+                                <i class="fa fa-usd fa-stack-1x fa-inverse "></i>
+                            </span> 
+
+                             <label > Add Crédito </label>
+
+                        </button>
+                  
+                        <button type="button" class="btn btn-primary" >
+                            <span class="fa-stack ">
+                                <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+                            </span>
+                            <label>Elimina</label>
+                        </button>
+                    </div>
+
+            </div>
+
+            <div class="col-md-12">
+                 <div class="col-sm-4  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Financeiro: </label>
+                         <select  class="form-control input-lg" ng-value="MD.UF" ng-model="MD.EstadoCivil"  >
+                            <option value="L00000020100620202848">Solteiro(a)</option>
+                            <option  value="L00000020100620202847">Casado(a)</option>
+                            <option value="L00000020100620202849">Divorciado(a)</option>
+                            <option  value="L00000020100620202850">Viuvo(a)</option>
+                         </select>
+                    </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name">Exibir Parcelas:</label>
+                        <select  class="form-control input-lg" ng-value="MD.UF" ng-model="MD.EstadoCivil"  >
+                            <option value="N">Apenas Débitos</option>
+                            <option  value="S">Apenas Pagas</option>
+                            <option value="T">Todas</option>
+                         </select>
+                    </div>
+                </div>
+
+                 <div class="col-sm-4">
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Venc. 	Pgto 	Histórico 	Detalhes 	Débito 	Juro 	Desc 	Crédito 	Cartao 	Baixa 	Situação 	-->
+        <div class="col-sm-12">
+            <div class="card-block pd-lr-0" style="padding-bottom: 0px;" >
+                <table class="table table-bordered table-striped table-condensed"  style="margin-bottom: 0px;">
+                    <thead>
+                        <tr  class="bgC CF">
+                            <th width="10%" >Venc.</th>
+                            <th width="5%" >Pgto</th>
+                            <th width="37%" >Histórico</th>
+                            <th width="6%"  >Detalhes</th>
+                            <th width="6%" >Débito</th>
+                            <th width="6%" >Juro</th>
+                            <th width="6%" >Desc</th>
+                            <th width="6%" >Crédito</th>
+                            <th width="6%" >Cartao</th>
+                            <th width="6%" >Baixa</th>
+                            <th width="6%" >Situação</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>      
+
+      </div>
+      <div class="modal-footer ">
+         <div class="Wbox-itens_2" >
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Total do Tratamento: </label>
+                        
+                            <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0.00">
+                                
+                            </div>
+
+
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Total Já Pago: </label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Juros: </label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Descontos: </label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Débito Restante: </label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Saldo Hoje: </label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+      </div>
+    </div>
+  </div>
+</div>              
