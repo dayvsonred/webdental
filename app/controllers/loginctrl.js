@@ -9,19 +9,10 @@ angular.module("portal").controller("loginCtrl", function ($scope, simpleService
 
     console.log("login controle");
 
-    
-    $scope.getNoticias = function(numQtds) {
-            simpleService.getNoticAPI(objGetNoticias)
-                .then(function (data) {
-                    console.log("retorno");
-                    console.log(data);
-                    console.log(data.data);
-            });
-    };
 
     $scope.SenhaKeyPress = function() {
         var agora = document.querySelector("[id='IPTsenha']").value;
-       $timeout(function () { $scope.SenhaFinal(agora); }, 1000);
+       $timeout(function () { $scope.SenhaFinal(agora); }, 400);
     };
 
     $scope.UserKeyPress = function() {
@@ -44,32 +35,31 @@ angular.module("portal").controller("loginCtrl", function ($scope, simpleService
             simpleService.getLogarClinicas(objDados)
                 .then(function (data) {
                     $scope.processando = 0;
-                    console.log("retorno");
-                    //console.log(data);  console.log(data.data);
+                    console.log("retorno getLogarClinicas");
+                    console.log(data);  console.log(data.data);
                     if(data.data.dados.length > 0){
                         console.log("senha ok");
                         $scope.ListClinicas =  angular.copy(data.data.dados);
                         $scope.ShowMsgSusses('msgLogar');
                         $scope.senhaOk = true;
                         $("#idClinicas" ).focus();
-
-
                     }else{
                         console.log("senha erro");
                     }  
             });
     };
 
-    $scope.setClinica = function(idClinica,clinica) {
+    $scope.setClinica = function(idClinica,clinica,prestador) {
         console.log("escolha clinica");
         console.log(idClinica + " - "+ clinica);
 
         $scope.frm.clinicaSelec = clinica;
         //$scope.frm.clinica = clinica;
         $scope.frm.IdClinica = idClinica;
+
+        $scope.frm.IdPrestador = prestador;
        
     };
-
 
     $scope.ShowMsgSusses = function(id) {
         $("#"+id).addClass("AddBlock");
@@ -92,7 +82,7 @@ angular.module("portal").controller("loginCtrl", function ($scope, simpleService
         //Window.localStorage.tokenSPMS = 'aaaaaaaaaaaa';
         //$window.sessionStorage.setItem("SavedString","I'm a value saved with SessionStorage");
         if($scope.senhaOk){
-            $location.path('/menu/');
+            $location.path('/Agenda-do-dia');
         }else{
             console.log("erro msg");
              $scope.ShowMsgSusses('msgLogarErro');

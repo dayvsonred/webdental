@@ -16,6 +16,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     $scope.GridDadosBD = {};
     $scope.ListOperadoraCel = {};
     $scope.MD = {}; //Objeto para os Modals
+    $scope.FormaPagSelectd = {}; // objeto para receber obj da lista de botoes da forma de pagamento MD finaceiro
 
     $scope.SelectedUnidMed = {
                             unidade : "",
@@ -30,23 +31,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
     
 
-    $scope.Ini = function() {
-        //console.log("ini");
+    
 
-
-        
-        
-            $scope.Usuario = $sessionStorage.getObject('UserWebDental');
-            if($scope.Usuario !== null){
-
-            }else{
-                /**
-                 * Sair do sistema se usuario nao identificado na seção 
-                 * Chama logout
-                 */
-                 $location.path('/');
-             }
-    };
 
      $scope.getUnidadeDados = function() {
           //console.log(" get getUnidadeDados");
@@ -189,7 +175,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                      */
                      Object.keys(data.data.dados).map(function (key) {
                         //console.log(ArrayCaderias[key].cadeira);
-                        data.data.dados[key].cadeiraValue = key;
+                        data.data.dados[key].cadeiraValue = parseInt(key)+1;
                     });
 
                     $scope.ListCadeiras = angular.copy(data.data.dados);
@@ -204,8 +190,15 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
     $scope.getAgendaDia = function() {
           console.log(" get getAgendaDia " );
-          console.log($scope.ag);
+          //console.log($scope.ag);
+          //console.log($scope.ListCadeiras);
+          //console.log($scope.ListCadeiras[0]);
           //console.log($scope.ag.cadeira);
+          if( ((typeof $scope.ag.cadeira == 'undefined') || ($scope.ag.cadeira == null) ) && ($scope.ListCadeiras[0]) && ( $scope.ListCadeiras[0].cadeiraValue > 0  ) ){
+              $scope.ag.cadeira = $scope.ListCadeiras[0];
+              console.log("Add cadeira automatico");
+              //console.log($scope.ag);
+          }
           //$scope.cadeiraValueSecelctd = $scope.ag.cadeira.cadeiraValue;
           //$scope.ag.cadeira = $scope.ag.cadeira.cadeira;
           //$scope.SelectedUnidMed
@@ -323,11 +316,6 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 $scope.ADDGridAtendimento( $scope.GridDadosBD[key], key );
                 //console.log(  $scope.GridDadosBD[key].hora_agenda ); 
             });
-
-
-            
-
-
       };
 
 
@@ -581,20 +569,28 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             }
 
 
+            /**
+             * exibe Botão Coverte paciente FICHARAPDA
+             */
+            if(( $scope.GridDadosBD[GridBDDados].cd_pacficharapida != null) && ( $scope.GridDadosBD[GridBDDados].cd_pacficharapida != ''  )){
+                $scope.ListAgendaDaddos[GrindList].BT_convertPacient = true;
+            }
+
 
             /**
-             * exibe Botão PARA TESTE
+             * exibe Botão PARA TESTE 
              */
 
-            $scope.ListAgendaDaddos[GrindList].BT_faltou = true;
-            $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
-            $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
-            $scope.ListAgendaDaddos[GrindList].BT_convertPacient = true;
+            //$scope.ListAgendaDaddos[GrindList].BT_faltou = true;
+            //$scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
+            //$scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+            //$scope.ListAgendaDaddos[GrindList].BT_convertPacient = true;
             
 
         };
         
      };
+
 
 
      /**
@@ -793,6 +789,77 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         }
     }
 
+    
+
+     $scope.pacienteChegou = function(LAG) {
+        console.log("pacienteChegou");
+        console.log(LAG);
+        console.log("list");
+        console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+        console.log("BD");
+        console.log($scope.GridDadosBD[LAG.GridKey]);
+        console.log("USER");
+        console.log($scope.UserDados);
+        console.log("AG-DADS");
+        console.log($scope.ag);
+
+        $scope.ag.USERID = $scope.UserDados.chave;
+        $scope.ag.PGnome = $scope.Pg.nome;
+        $scope.ag.chaveAgenda = $scope.GridDadosBD[LAG.GridKey].chave;
+        $scope.ag.data_agenda = $scope.GridDadosBD[LAG.GridKey].data_agenda;
+
+        AgendaService.setPacienteChegou($scope.ag)
+                .then(function (data) {
+                   console.log(" get ConfirmaCancelAtendimento retorno");  console.log(data); console.log(data.data);
+                   if(data.data.dados == 'ok'){
+                        $scope.getAgendaDia(); //Mudar para apena aterar os estatus - nao buscar do back
+                    }
+        });
+
+    };
+
+
+    $scope.pacienteFalta = function(LAG) {
+        console.log("pacienteFalta");
+        console.log(LAG);
+        console.log("list");
+        console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+        console.log("BD");
+        console.log($scope.GridDadosBD[LAG.GridKey]);
+        console.log("USER");
+        console.log($scope.UserDados);
+        console.log("Clinica");
+        console.log($scope.ClinicDados);
+        console.log("AG-DADS");
+        console.log($scope.ag);
+
+        $scope.ag.USERID = $scope.UserDados.chave;
+        $scope.ag.PGnome = $scope.Pg.nome;
+        $scope.ag.chaveAgenda = $scope.GridDadosBD[LAG.GridKey].chave;
+        $scope.ag.data_agenda = $scope.GridDadosBD[LAG.GridKey].data_agenda;
+        $scope.ag.hora_agenda = $scope.GridDadosBD[LAG.GridKey].hora_agenda;
+        $scope.ag.cd_paciente = $scope.GridDadosBD[LAG.GridKey].cd_paciente;
+        $scope.ag.cd_tipo_tratamento = $scope.GridDadosBD[LAG.GridKey].cd_tipo_tratamento;
+        $scope.ag.cd_filial = $scope.ClinicDados.cd_unidade_atendimento;
+        $scope.ag.nm_unidade_atendimento = $scope.ClinicDados.nm_unidade_atendimento;
+        $scope.getMedicoNome($scope.ag.medico,$scope.ag);
+         
+        
+        
+        
+
+        
+
+        AgendaService.setPacienteFalta($scope.ag)
+                .then(function (data) {
+                   console.log(" get SetPacienteFalta retorno");  console.log(data); console.log(data.data);
+                   if(data.data.error == false){
+                        $scope.getAgendaDia(); //Mudar para apena aterar os estatus - nao buscar do back
+                    }
+        });
+
+    };
+
 
     /**
      * Abre modal com Dados da consulta
@@ -926,18 +993,19 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
      * Busca para preenche o grid com os pacientes da clinica 
      * @param String Com o nome digitado esta no OBJECT $scope.MD 
      */
-    $scope.getListPacienteForString = function() {
+    $scope.getListPacienteForString = function(e) {
         console.log("getListPacienteForString");
         //console.log($scope.MD);
-        
+        if((e.which == 13) || (e.which == 32 )){
                AgendaService.getListPacienteForString($scope.MD)
                 .then(function (data) {
                    console.log("get getListPacienteForString retorno");  console.log(data); console.log(data.data);
                         $scope.ListBuscaPacientClinica = angular.copy(data.data.dados);
                         $scope.MD.TabelaTopTXT = true;
                         console.log($scope.ListBuscaPacientClinica);
-                        
               });
+        };
+
     };
     
 
@@ -977,8 +1045,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     $scope.MD.cadeiraValue =  $scope.ag.cadeira.cadeiraValue; //'0'; // desenvolver metodo para altera valor da cadeira para 0 ou 1 ....
                     AgendaService.insertConsultaGrid($scope.MD)
                     .then(function (data) {
-                        //console.log("get InsertConsultaGrid retorno ****************");  console.log(data); console.log(data.data);
-                        $scope.getSelcCadeiras();
+                        console.log("get InsertConsultaGrid retorno ");  console.log(data); console.log(data.data);
+                        //$scope.getSelcCadeiras();
+                        $scope.getAgendaDia(); //Mudar para apena aterar os estatus - nao buscar do back
                         $scope.OpenCloseModalById('MDNovaConsult');
                                 //$scope.ListMotivoAtendimento = angular.copy(data.data.dados);
                     });
@@ -1075,6 +1144,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     }
             });
     }
+   
     
     $scope.getTipoTratamentoNome = function(id,obj) {
          Object.keys($scope.ListTratamento).map(function (key) {
@@ -1118,7 +1188,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         $scope.MD.nome = $scope.GridDadosBD[LAG.GridKey].nm_paciente;
         $scope.MD.sobrenome = $scope.GridDadosBD[LAG.GridKey].sobrenome;
 
-        $scope.MD.A5nomePaciente = $scope.MD.nome +" "+ $scope.MD.sobrenome;
+        $scope.MD.nomePaciente = $scope.MD.nome +" "+ $scope.MD.sobrenome;
 
         $scope.MD.GridKey = LAG.GridKey;
         $scope.MD.KeyList = LAG.KeyList;
@@ -1144,17 +1214,154 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 .then(function (data) {
                     console.log(" get getFinanceiroPaciente retorno"); console.log(data); console.log(data.data);
                     $scope.listFinacTratamentos = angular.copy(data.data.dados);
+
+                    $scope.listFinacGrid = angular.copy(data.data.grid);
+
+                    $scope.listFinacGridJuros = angular.copy(data.data.juros);
+
+
+                     console.log($scope.listFinacTratamentos);
+                     console.log($scope.listFinacGrid);
+
+                     console.log("juros");
+                     console.log($scope.listFinacGridJuros);
+
+
+                    
             });
 
-    
+
+            /***
+             * Faço um get para pegar os dados do paciente noa disponiveis ainda
+             */
+            AgendaService.getPaciente($scope.MD.cd_paciente)
+                .then(function (data) {
+                    console.log(" get getPaciente retorno");  console.log(data.data.dados);
+                    $scope.MD.pacienteDados = data.data.dados;
+                });
+
+            /***
+             * Faço um get para pegar as formas de pagamento
+             */
+            AgendaService.getFormasPagamento()
+                .then(function (data) {
+                    console.log(" get GetFormasPagamento retorno");  console.log(data.data.dados);
+                    $scope.ListFormsPagamento = data.data.dados;
+            });
+
+            /***
+             * Faço um get para pegar as operadoras no caso do BigCard
+             */
+            AgendaService.getOperadorasCartao()
+                .then(function (data) {
+                    console.log(" get getOperadorasCartao retorno");  console.log(data.data.dados);
+                    $scope.ListFormsPagOperadoras = data.data.dados;
+            });
+
+
+            /***
+             * Faço um get para pegar BANDEIRAS DE CARTAO
+             */
+            AgendaService.getBandeirasCartao($scope.MD.cd_unidade)
+                .then(function (data) {
+                    console.log(" get getBandeirasCartao retorno");  console.log(data.data.dados);
+                    $scope.ListFormsPagBandeiras = data.data.dados;
+            });
+
+            
+            
+        /**
+         * Seto TODAS no selected para exibir todo o retorno
+         */
+        $scope.MD.exibirSelect = "T";
+
+
+        /**
+         * Seto o padrao ini de algumas variaveis
+         */
+        $scope.MD.baixaFormaCalc = "R$";
+
+
         console.log($scope.MD);
 
-          
+
+        
+
         $scope.OpenCloseModalById('MDDadosFinanceiro');
 
     };
 
     
+    /**
+     * AINDA NAO ESTA FUNCIONANDO
+     * Calcula Juros 
+     * o juros e calcula se a parcela for promisoria e ja estiver a mais de um dia vencida
+     * Função rescebe o iten do grid e retorna o juros
+     */
+    $scope.calcJurosMdFinanceiro = function(LAG) {
+        // debito_efetivado   == 'N'   nm_tipo_pagamento == 'Nota Promissoria'
+        /*if($res['debito_efetivado'] == 'N' && $res['nm_tipo_pagamento'] == 'Nota Promissoria'){
+            $dias_atraso = (strtotime(date('Y-m-d')) - strtotime($res['data'])) / 86400;
+            if($dias_atraso > 0){
+                //pega percentual de juros ao dia
+                $sql = "select percentual_juros_atraso from tbl_sistema";
+                $sql = query_execute($sql,$con);
+                $perc = mysqli_fetch_array($sql);
+                extract($perc);
+                $valor = $res['valor_parcela'];
+                for($x=1; $x <= $dias_atraso; $x++){
+                    $valor += ($valor * ($percentual_juros_atraso / 100));
+                }
+                $juros = $valor - $res['valor_parcela'];
+            }else{
+                $juros = 0.00;
+            }
+        }else{
+            $juros = $res["juros"];
+        }
+        */
+    };
+
+
+    /**
+     * Exibe link(icon) para modal financeiro da parcela do tratamento
+     * o id do elemento e sempre iniciado com 'MdFinTd' e acresentado hashkey
+     * VERIFICAR ACEESO **#
+     */
+    $scope.baixaMdFinanceiro = function(LAG,ID) {
+        //console.log("baixaMdFinanceiro");
+        //console.log(ID);
+        var ItenId = 'MdFinTd' + ID;
+        if(LAG.cd_parcela_destino !== null  &&  LAG.debito_efetivado == 'S' ){
+                //console.log('<i class="fa fa-check-circle"></i>');
+                document.querySelector("[id='"+ItenId+"']").innerHTML =  '<i class="fa fa-check-circle "   ></i>' ;
+                //LAG.situacaoBaixaIcon = '<i class="fa fa-check-circle"></i>' ;
+                
+        }else{
+            if (LAG.debito_efetivado == "S") {
+                //console.log('<i class="fa fa-check" aria-hidden="true"></i>');
+                document.querySelector("[id='"+ItenId+"']").innerHTML = '<i class="fa fa-check " aria-hidden="true"  ></i>';
+                ///LAG.situacaoBaixaIcon = '<i class="fa fa-check" aria-hidden="true"></i>';
+            }
+            else{
+                //console.log('<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>');
+                document.querySelector("[id='"+ItenId+"']").innerHTML = '<i class="fa fa-arrow-circle-o-down " aria-hidden="true"  ></i>';
+                //LAG.situacaoBaixaIcon = '<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>';
+            }
+        }
+    }
+
+
+    /**
+     * NAO ESTA SENDO USADO
+     * exibe inputs do Modal financeiro
+     * dados complementares para a forma de pagamento
+     */
+    $scope.showBTsFormaPag = function(LAG) {
+        console.log("showBTsFormaPag");
+        console.log(LAG);
+        $scope.FormaPagSelectd = LAG;
+    };
 
 
 
@@ -1181,15 +1388,24 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
 
      
+    $scope.addSelectdMdFinaceiro = function() {
+        console.log("addSelectdMdFinaceiro");
 
+        $scope.MD.tratSelectd = $scope.finShow.cd_financeiro;
+        $scope.MD.exibirDebitoSelectd = $scope.MD.debito_efetivado;
+        
+    };
+
+    $scope.ShowLinhaMdFinacenro = function(LAG) {
+        console.log("ShowLinhaMdFinacenro");
+        console.log(LAG);
+    };
+    
 
     $scope.getDadosUser = function() {
-        var userChave = {
-                            chave : 'L00500020160620140212'
-                        };
-        //console.log(" get GetDadosUser");
-        //console.log(userChave);
-            AgendaService.getDadosUser(userChave)
+       var userChave = { 'chave' : $scope.Usuario.IdPrestador   }; // antes usava como teste valo usuario admin
+            console.log('getDadosUser');console.log(userChave);
+            AgendaService.getDadosUser(userChave) 
                 .then(function (data) {
                     //console.log(" get GetDadosUser retorno"); console.log(data); console.log(data.data);
                     $scope.UserDados = angular.copy(data.data.dados[0]);
@@ -1291,6 +1507,42 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
 
     /**
+     * Funcão de inicialização do sistema 
+     * Onde e difinido dos dados de acesso e segurança da pagina
+     */
+    $scope.Ini = function() {
+        console.log("ini");
+        
+            $scope.Usuario = $sessionStorage.getObject('UserWebDental');
+            console.log($scope.Usuario);
+
+            if($scope.Usuario !== null){
+
+                $scope.getDadosUser();
+
+                //Pega a unidade selecionada no login
+                var clinicaSelected = {
+                    'chave' : $scope.Usuario.IdClinica,
+                    'nm_unidade_atendimento' : $scope.Usuario.clinicaSelec
+                };
+                console.log($scope.ag);
+                $scope.ListUnidade = clinicaSelected;
+                $scope.ag.unidade = $scope.Usuario.IdClinica;
+                console.log("ini seta unidade");
+                console.log($scope.ag);
+                $scope.getSelectMedicos();
+
+            }else{
+                /**
+                 * Sair do sistema se usuario nao identificado na seção 
+                 * Chama logout
+                 */
+                 $location.path('/');
+             }
+    };
+
+
+    /**
      * Costroi array tempo step 15
      */
     $scope.stepConsultas = [];  var i,ob; for (i = 10; i < 125; ) { ob = {'valor' : i  };  $scope.stepConsultas.push(ob); i = i + 5;  };
@@ -1357,8 +1609,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     * INICIALIZAR FUNÇOES
     *
     ------------------------------------------------------------------------------- */
-   // $scope.Ini();
-    $scope.getDadosUser();
+    $scope.Ini();
+    //$scope.getDadosUser();// esta sendo chanmado dentro do INI
     $scope.getSelcTratamento();
     $scope.getSelcUnidade();
     

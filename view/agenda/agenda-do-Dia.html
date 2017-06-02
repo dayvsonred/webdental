@@ -96,10 +96,10 @@
                                                 <div class="col-md-8">
 
                                                     <!-- BT PACIENTE CHEGOU -->
-                                                    <i ng-if="LAG.BT_chegou" class="icon-home icons " title="Paciente Chegou"></i>
+                                                    <i ng-if="LAG.BT_chegou" class="icon-home icons " title="Paciente Chegou" ng-click="pacienteChegou(LAG)"    ></i>
                                                     
                                                     <!-- BT PACIENTE FALTOU -->
-                                                    <span ng-if="LAG.BT_faltou" class="fa-stack agd-ico-ft2" title="Paciente faltou">
+                                                    <span ng-if="LAG.BT_faltou" class="fa-stack agd-ico-ft2" title="Paciente faltou" ng-click="pacienteFalta(LAG)"   >
                                                         <i class="fa fa-user-o fa-stack-1x"></i>
                                                         <i class="fa fa-ban fa-stack-2x text-danger"></i>
                                                     </span>
@@ -407,7 +407,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" style="  padding-right: 0; padding-left: 0;">
                     <div class="form-group">
                         <label for="name">Tratamento do Atendimento:</label>
                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.tratamento"  >
@@ -427,7 +427,7 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label for="name">Informe NOME, CPF, TELEFONE ou MATRÍCULA/CARTÃO do paciente:</label>
-                        <input type="text" class="form-control" ng-model="MD.BuscarString"  ng-enter="getListPacienteForString()"  >
+                        <input type="text" class="form-control" ng-model="MD.BuscarString"  ng-keydown="getListPacienteForString($event)"     >
                     </div>
                 </div>
             </div>
@@ -1061,7 +1061,7 @@
                  <div class="col-sm-4  pd-l-0">
                     <div class="form-group">
                         <label for="name">Financeiro: </label>
-                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.finacSelect"  >
+                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="finShow.cd_financeiro"  ng-change="addSelectdMdFinaceiro()" > <!-- O ng-change joga o valor da troca no Objto MD -->
                             <option ng-repeat="fa in listFinacTratamentos" ng-value="fa.chave" >{{fa.dt}}</option>
                         </select>
                     </div>
@@ -1070,10 +1070,10 @@
                  <div class="col-sm-4">
                     <div class="form-group">
                         <label for="name">Exibir Parcelas:</label>
-                        <select  class="form-control input-lg" ng-value="MD.UF" ng-model="MD.EstadoCivil"  >
+                        <select  class="form-control input-lg"  ng-model="finShow.debito_efetivado"  ng-change="addSelectdMdFinaceiro()"  >
                             <option value="N">Apenas Débitos</option>
-                            <option  value="S">Apenas Pagas</option>
-                            <option value="T">Todas</option>
+                            <option value="S">Apenas Pagas</option>
+                            <option value="">Todas</option>
                          </select>
                     </div>
                 </div>
@@ -1082,6 +1082,293 @@
                     
                 </div>
             </div>
+
+            
+
+
+            <div class="col-md-12">
+
+                 <div class="col-sm-4  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Forma Pagamento: </label>
+                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.baixaFormPag" > 
+                            <option ng-repeat="fb in ListFormsPagamento" ng-value="fb.chave" class="text-capitalize" >{{fb.nm_tipo_pagamento}}</option>
+                        </select>
+                    </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name">Nome: </label>
+                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name">CPF:</label>
+                        <input type="text" class="form-control" ng-model="MD.baixaCPF"  >
+                    </div>
+                </div>
+            </div>
+
+            <!-- linha para formas de pagamentos de cartoes ou cheques ************************************* -->
+
+
+
+
+            <!-- big card  L00000020101021162909 -->
+            <div class="col-md-12" ng-if="MD.baixaFormPag == 'L00000020101021162909' "   >
+
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Nº Cartão 4 primeiros dígitos: </label>
+                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" >
+                    </div>
+                 </div>
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Nº Cartão 4 últimos dígitos: </label>
+                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Validade: </label>
+                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient"  >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Cod. Seg:</label>
+                        <input type="text" class="form-control" ng-model="MD.baixaCPF"  >
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name">Operadora:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.baixaFormPagOper"   > 
+                            <option ng-repeat="fd in ListFormsPagOperadoras" ng-value="fd.chave" class="text-capitalize" >{{fd.nm_operadora_cartao}}</option>
+                        </select>
+                        
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- 
+                cartao de credito                   - L00000020100620202855 
+                Cartão de Débito - Eletron          - L20120705222521  
+                -->
+            <div class="col-md-12" ng-if="(MD.baixaFormPag == 'L00000020100620202855') ||  (MD.baixaFormPag == 'L20120705222521') "  >
+
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Nº Cartão 4 primeiros dígitos: </label>
+                         <input type="text" class="form-control"   >
+                    </div>
+                 </div>
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Nº Cartão 4 últimos dígitos: </label>
+                         <input type="text" class="form-control"   >
+                    </div>
+                 </div>
+
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Bandeira:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.baixaFormPagOper"   > 
+                            <option ng-repeat="fe in ListFormsPagBandeiras" ng-value="fe.cd_bandeira_cartao" class="text-capitalize" >{{fe.nm_bandeira_cartao}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+           
+            <!-- Cheque                     L00000020100620202853 
+                 Cheque pré-datado          L00000020100620202851
+                 
+             -->
+            <div class="col-md-12  " ng-if="(MD.baixaFormPag == 'L00000020100620202853') ||  (MD.baixaFormPag == 'L00000020100620202851') " >
+
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Nº Cheque: </label>
+                         <input type="text" class="form-control"    >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Banco: </label>
+                         <input type="text" class="form-control"   >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Agência: </label>
+                        <input type="text" class="form-control"  >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Conta:</label>
+                        <input type="text" class="form-control"  >
+                    </div>
+                </div>
+            </div>
+
+
+           
+
+             <!--  Pagamento Online         L00500020121106173932             -->
+            <div  class="col-md-12"   ng-if="(MD.baixaFormPag == 'L00500020121106173932') " >
+
+
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Banco: </label>
+                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Agência: </label>
+                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Conta:</label>
+                        <input type="text" class="form-control" ng-model="MD.baixaCPF" ng-disabled="true" >
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- fim pagamentos de cartoes ou cheques ******************************************************* -->
+
+
+
+
+            <div class="col-md-12">
+                 <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Vencimento: </label>
+                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Baixa: </label>
+                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient"  >
+                    </div>
+                 </div>
+
+                 <div class="col-sm-1">
+                    <div class="form-group">
+                        <label for="name">Atraso:</label>
+                        <input type="text" class="form-control" ng-model="MD.baixaCPF" ng-disabled="true" >
+                    </div>
+                </div>
+
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <label for="name">Histórico:</label>
+                        <input type="text" class="form-control" ng-model="MD.baixaCPF" ng-disabled="true" >
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                 <div class="col-sm-4  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Valor da Parcela: </label>
+                         <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name">Valor à  Pagar: </label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="name">Valor Pago:</label>
+                        <div class="input-group">
+                                <span class="input-group-addon">R$</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+
+
+                <div class="col-sm-2  pd-l-0">
+                    <div class="form-group">
+                        <label for="name">Tipo desconto (R$/%): </label>
+                         <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.baixaFormaCalc"  > 
+                            <option value="R$" > R$ - Valor em Reais</option>
+                            <option value="%" > % - Porcentagem </option>
+                        </select>
+                    </div>
+                 </div>
+
+
+                 <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Juros: </label>
+                         <div class="input-group">
+                                <span class="input-group-addon">{{MD.baixaFormaCalc}}</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                 </div>
+
+                  <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name">Desconto:</label>
+                        <div class="input-group">
+                                <span class="input-group-addon">{{MD.baixaFormaCalc}}</span>
+                                <input type="text"  class="form-control" placeholder="0,00">
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="name">Unidade de Atendimento:</label>
+                        <input type="text" class="form-control" ng-model="MD.baixaUnidade" >
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
 
         <!-- Venc. 	Pgto 	Histórico 	Detalhes 	Débito 	Juro 	Desc 	Crédito 	Cartao 	Baixa 	Situação 	-->
@@ -1091,27 +1378,36 @@
                     <thead>
                         <tr  class="bgC CF">
                             <th width="10%" >Venc.</th>
-                            <th width="5%" >Pgto</th>
-                            <th width="37%" >Histórico</th>
-                            <th width="6%"  >Detalhes</th>
+                            <th width="8%" >Pgto</th>
+                            <th width="24%" >Histórico</th>
+                            <th width="10%"  >Detalhes</th>
                             <th width="6%" >Débito</th>
                             <th width="6%" >Juro</th>
                             <th width="6%" >Desc</th>
                             <th width="6%" >Crédito</th>
                             <th width="6%" >Cartao</th>
-                            <th width="6%" >Baixa</th>
+                            <th width="12%" >Baixa</th>
                             <th width="6%" >Situação</th>
-
                         </tr>
-
-                        <tr ng-repeat="lu in ListGrid" ng-click="GridAddConsulta(lu)" >
-                                <td  > {{lu.nome}}</td> <!-- cpf -->
-                                <td  > {{lu.numero}} </td>
-                                <td  > {{lu.num_telefone1}} </td>
-                                <td   > {{lu.tipo}} </td>
-                                <td  > {{lu.nm_unidade_atendimento}} </td>
-                            </tr>
                     </thead>
+                    <tbody>
+                        <tr ng-repeat="fb in listFinacGrid | filter:finShow" ng-click="" class="ag-mdFinac-dados" >
+                                <td   ng-click="ShowLinhaMdFinacenro(fb)" > {{ fb.data }} </td>  <!-- Venc -->
+                                <td  > {{ fb.dt_baixa }} </td> <!-- Pgto -->
+                                <td  > {{ fb.historico }} </td> <!-- Histórico -->
+                                <td  > <p style="margin-bottom: 0;"> {{ fb.nm_tipo_pagamento}}  </p>
+                                       <p style="margin-bottom: 0;"> {{fb.pg_responsavel_nome}} </p>
+                                       <p style="margin-bottom: 0;"> {{fb.pg_responsavel_cpf }} </p>
+                                </td> <!-- Detalhes -->
+                                <td  > {{ fb.valor_parcela }} </td> <!-- Débito -->
+                                <td  > {{  }} </td> <!-- Juro -->
+                                <td  > {{ fb.desconto }} </td> <!-- Desc    fb.tdesc <- esta faltando exibir a fator    -->
+                                <td  > {{ fb.valor_credito }} </td> <!-- Crédito -->
+                                <td  > {{ fb.juros_cartao }} </td> <!-- Cartao -->
+                                <td style="padding-right: 0;"> {{ fb.nome_quem_baixou }} </td> <!-- Baixa -->
+                                <td ng-open="baixaMdFinanceiro(fb,fb.$$hashKey)"  class="ag-mdFinac-baixa"><label id="MdFinTd{{fb.$$hashKey}}"></label></td> <!-- Situação -->
+                            </tr>
+                    </tbody>
                 </table>
             </div>
         </div>      

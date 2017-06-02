@@ -77,6 +77,35 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/GetFinanceiroPacienteAG", data);
     };
 
+    this.getPaciente = function (data) {
+        return $http.post(config.baseUrl + "/api/GetPaciente/"+ data);
+    };
+
+    this.getFormasPagamento = function () {
+        return $http.post(config.baseUrl + "/api/GetFormasPagamento");
+    };
+
+    this.getOperadorasCartao = function () {
+        return $http.post(config.baseUrl + "/api/GetOperadorasCartao");
+    };
+
+    this.getBandeirasCartao = function (data) {
+        return $http.post(config.baseUrl + "/api/GetBandeirasCartao/"+ data);
+    };
+
+    this.setPacienteChegou = function (data) {
+        return $http.post(config.baseUrl + "/api/SetPacienteChegou", data);
+    };
+
+    this.setPacienteFalta = function (data) {
+        return $http.post(config.baseUrl + "/api/SetPacienteFalta", data);
+    };
+
+    
+
+
+
+
     
 
 

@@ -441,7 +441,7 @@
 
 
 
-.AtendFichaRapd, .css_ficharapida
+.AtendFichaRapd, .css_ficharapida,
 .agendaColor-1 {
     background-color : rgba(210, 25, 110, 0.77);
     color: #fff !important;
@@ -538,6 +538,23 @@
     font-weight: 600;
 }  
 
+
+.ag-mdFinac-dados{
+    font-size: 12;
+}
+.ag-mdFinac-dados:hover {
+    background-color: rgba(179, 0, 0, 0.19) !important;
+}
+
+.ag-mdFinac-baixa i {
+    padding: 1 20; 
+    font-size: 20;
+
+}
+.ag-mdFinac-baixa label:hover {
+    cursor: pointer;
+    color: green;
+}
 
 
 /*----------------------------------------------------------

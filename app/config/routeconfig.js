@@ -19,7 +19,7 @@ angular.module("portal").config(function ($routeProvider) {
     
     
     
-    $routeProvider.otherwise({redirectTo: "/error"});
+    $routeProvider.otherwise({redirectTo: "/login"});
 });
 
 
