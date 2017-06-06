@@ -101,6 +101,10 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/SetPacienteFalta", data);
     };
 
+    this.setPacienteAtendido = function (data) {
+        return $http.post(config.baseUrl + "/api/SetPacienteAtendido", data);
+    };
+
     
 
 

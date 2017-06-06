@@ -85,7 +85,7 @@
                                         <div class="col-md-7 agendaInfoPact " ng-click="ShowAtendimento(LAG)">
 
                                             <!-- INFORMAÇÔES DO PACIENTE -->
-                                            <div  ng-if="LAG.dados.length > 1" class="h7 ag-nome m-a-0 "><label ng-class="LAG.addcss_daados"   >{{LAG.dados}}</label></div>
+                                            <div  ng-if="LAG.dados.length > 1" class="h7 ag-nome m-a-0 "><label ng-class="LAG.addcss_daados"   >{{LAG.dados}} </label></div>
                                             <div  ng-if="LAG.tel.length > 5"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.tel}}</small></div>
                                             <div  ng-if="LAG.observac.length > 5"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.observac}}</small></div>
                                             <div  ng-if="LAG.espcialidd.length > 1"  class="h7 m-a-0 lb-shad-a"><small> {{LAG.espcialidd}}</small></div>
@@ -97,9 +97,12 @@
 
                                                     <!-- BT PACIENTE CHEGOU -->
                                                     <i ng-if="LAG.BT_chegou" class="icon-home icons " title="Paciente Chegou" ng-click="pacienteChegou(LAG)"    ></i>
+
+                                                    <!-- BT ATERDER PACIENTE - FINALIZAR CONSULTA -->
+                                                    <i  ng-if="LAG.BT_atender"  class="glyph-icon flaticon-medical-10" title="Paciente atendido" ng-click="pacienteAtender(LAG)" ></i>
                                                     
                                                     <!-- BT PACIENTE FALTOU -->
-                                                    <span ng-if="LAG.BT_faltou" class="fa-stack agd-ico-ft2" title="Paciente faltou" ng-click="pacienteFalta(LAG)"   >
+                                                    <span ng-show="LAG.BT_faltou" class="fa-stack agd-ico-ft2" title="Paciente faltou" ng-click="pacienteFalta(LAG)"   >
                                                         <i class="fa fa-user-o fa-stack-1x"></i>
                                                         <i class="fa fa-ban fa-stack-2x text-danger"></i>
                                                     </span>
@@ -1483,3 +1486,92 @@
     </div>
   </div>
 </div>              
+
+
+
+
+<!-- Modal Exibe Finalizar consulta - paciente atendido  ##################################################################### -->
+<div class="modal fade" id="MDAtendePacient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel8" aria-hidden="true">
+  <div class="modal-dialog md-Full" role="document">
+    <div class="modal-content">
+      <div class="modal-header bgC CF">
+        <h5 class="modal-title" id="exampleModalLabel8">Finalizando a Consulta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+       
+        <div class="Wbox-itens_2" >
+            <div class="col-sm-12">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="name">Paciente </label>
+                        <input type="text" class="form-control"  ng-model="MD.nome"   >
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Data:</label>
+                        <input type="text" class="form-control" ng-model="MD.data_a" >
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Hora:</label>
+                        <input type="text" class="form-control" ng-model="MD.hora_agenda"  >
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="name">Duração:</label>
+                        <input type="text" class="form-control" ng-model="MD.duracao_agenda"   >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Intervenções:</label>
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.intevecoes"  > 
+                            <option value="0" >Lançar apenas observação</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+        <div class="col-sm-12">
+            <div class="alert alert-info" role="alert">
+                <strong>Atenção!</strong> Observação obrigatoria para finalizar o atendimento...
+            </div>
+        </div>
+
+
+          <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="name">Observação do Atendimento:</label>
+                        <input type="text" class="form-control" ng-model="MD.observacao"   >
+                    </div>
+                </div>
+            </div>
+
+
+         </div>
+
+
+
+      </div>
+      <div class="modal-footer ">
+          <div class="col-md-12" >
+            <button type="button" class="btn btn-outline-success "  ng-disabled="((MD.observacao == null) || (MD.observacao == '') )  " ng-click="setPacienteAtendido()"> <i class="fa fa-check" aria-hidden="true"></i> Finalizar Atendimento</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>              
+
+

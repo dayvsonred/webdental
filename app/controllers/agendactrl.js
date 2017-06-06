@@ -295,6 +295,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 $scope.ListAgendaDaddos[key].BT_cacelarConslt = false;
                 $scope.ListAgendaDaddos[key].BT_cartaoFinanceiro = false;
                 $scope.ListAgendaDaddos[key].BT_convertPacient = false;
+                $scope.ListAgendaDaddos[key].BT_atender = false;
+                
                 
             });
       };
@@ -456,6 +458,10 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             console.log("---------------ApagaIntervalosConsutas ------------------");
             //console.log($scope.ListAgendaDaddos[value]);
             //console.log($scope.ListAgendaDaddos[value].KeyList); //value dados in key list
+
+            //console.log($scope.ListAgendaDaddos[value].KeyList)
+            //console.log(value);
+
             var next = parseInt(value) +1;
             var next_MAIS_UM = parseInt(next) +1;
             //console.log("PROXIMA HORA DO ARRAY");
@@ -498,6 +504,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                                         'BT_cartaoFinanceiro':false,
                                         'BT_chegou':false,
                                         'BT_faltou':false,
+                                        'BT_atender':false,
                                         'KeyList':next,
                                         'addcss':"",
                                         'addcss_daados':"",
@@ -544,9 +551,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
              */
             if(($scope.GridDadosBD[GridBDDados].situacao == null || $scope.GridDadosBD[GridBDDados].situacao == 'C'  ) && ($scope.GridDadosBD[GridBDDados].faltou == null)){
                     $scope.ListAgendaDaddos[GrindList].BT_chegou = true;
-                    //console.log("true *********************************************************************************");
+                    //console.log("true - Botão Chegou ");
                     if(!$scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) ){
-                        //console.log("true *********************************************************************************");
+                        //console.log("true - Botão Faltou ");
                         $scope.ListAgendaDaddos[GrindList].BT_faltou = true;
                         //$scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
                     }
@@ -555,7 +562,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
              * exibe Botão Cancelar 
              */
             //console.log($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) );
-            if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'B') || ($scope.GridDadosBD[GridBDDados].situacao == 'E') ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) && ($scope.GridDadosBD[GridBDDados].faltou == null)  ){
+            if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'E') ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) && ($scope.GridDadosBD[GridBDDados].faltou == null)  ){
                     //console.log("2");
                     $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
                     //$scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
@@ -574,6 +581,13 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
              */
             if(( $scope.GridDadosBD[GridBDDados].cd_pacficharapida != null) && ( $scope.GridDadosBD[GridBDDados].cd_pacficharapida != ''  )){
                 $scope.ListAgendaDaddos[GrindList].BT_convertPacient = true;
+            }
+
+            /**
+             * exibe Botão Atender paciente 
+             */
+            if(($scope.GridDadosBD[GridBDDados].situacao == 'B') && ($scope.GridDadosBD[GridBDDados].faltou == null) ){
+                $scope.ListAgendaDaddos[GrindList].BT_atender = true;
             }
 
 
@@ -790,6 +804,67 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
     }
 
     
+    /**
+     * Atender paciente
+     */
+     $scope.pacienteAtender = function(LAG) {
+        console.log("pacienteAtender");
+        console.log(LAG);
+        console.log("list");
+        console.log($scope.ListAgendaDaddos[LAG.KeyList]);
+        console.log("BD");
+        console.log($scope.GridDadosBD[LAG.GridKey]);
+        console.log("USER");
+        console.log($scope.UserDados);
+        console.log("AG-DADS");
+        console.log($scope.ag);
+
+        $scope.MD = {};
+
+        $scope.MD.USERID = $scope.UserDados.chave;
+        $scope.MD.PGnome = $scope.Pg.nome;
+        $scope.MD.chaveAgenda = $scope.GridDadosBD[LAG.GridKey].chave;
+        $scope.MD.data_agenda = $scope.GridDadosBD[LAG.GridKey].data_agenda;
+        $scope.MD.data_a = $scope.ag.data_a;
+        $scope.MD.hora_agenda = $scope.GridDadosBD[LAG.GridKey].hora_agenda;
+        $scope.MD.duracao_agenda = $scope.GridDadosBD[LAG.GridKey].duracao_agenda;
+        $scope.MD.cd_prestador = $scope.GridDadosBD[LAG.GridKey].cd_prestador;
+        $scope.MD.cd_paciente = $scope.GridDadosBD[LAG.GridKey].cd_paciente;
+        $scope.MD.cd_paciente = $scope.GridDadosBD[LAG.GridKey].cd_paciente;
+        $scope.MD.cd_filial = $scope.ag.filial;
+        $scope.MD.nome = $scope.GridDadosBD[LAG.GridKey].nome;
+        $scope.MD.intevecoes = "0"// o selecte nao esta buscando varios itens
+        $scope.MD.observacao = null;
+
+        console.log($scope.MD);
+
+        $scope.OpenCloseModalById('MDAtendePacient');
+
+
+
+    };
+
+
+
+    $scope.setPacienteAtendido = function() {
+        console.log("setPacienteAtendido");
+        //console.log($scope.MD);
+        
+        $scope.OpenCloseModalById('MDAtendePacient'); // fecho o modal antes do retorno da Api para q nao possa ser enviado varias vezes
+
+        AgendaService.setPacienteAtendido($scope.MD)
+                .then(function (data) {
+                   console.log(" get setPacienteAtendido retorno");  console.log(data); console.log(data.data);
+                   if(data.data.error == false){
+                        $scope.getAgendaDia(); //Mudar para apena aterar os estatus - nao buscar do back
+                    }
+        });
+
+    }
+
+
+
+
 
      $scope.pacienteChegou = function(LAG) {
         console.log("pacienteChegou");
