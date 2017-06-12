@@ -105,6 +105,13 @@ angular.module("portal").service("AgendaService", function ($http, config) {
         return $http.post(config.baseUrl + "/api/SetPacienteAtendido", data);
     };
 
+    this.getTratamentDesconto = function (data) {
+        return $http.post(config.baseUrl + "/api/GetTratamentDesconto", data);
+    };
+
+
+    
+
     
 
 

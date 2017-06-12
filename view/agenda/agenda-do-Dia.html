@@ -1038,7 +1038,7 @@
                     </div>
             </div>
 
-            <div class="col-md-12 finamBt_1">
+            <div ng-if="MD.FormFinaceiroBaixa == false" class="col-md-12 finamBt_1">
                     <div class="form-group">
                         <button type="button" class="btn btn-primary" > 
                             <span class="fa-stack ">
@@ -1060,7 +1060,7 @@
 
             </div>
 
-            <div class="col-md-12">
+            <div ng-show="MD.FormFinaceiroBaixa == false" class="col-md-12">
                  <div class="col-sm-4  pd-l-0">
                     <div class="form-group">
                         <label for="name">Financeiro: </label>
@@ -1089,7 +1089,7 @@
             
 
 
-            <div class="col-md-12">
+            <div ng-if="MD.FormFinaceiroBaixa == true" class="col-md-12">
 
                  <div class="col-sm-4  pd-l-0">
                     <div class="form-group">
@@ -1103,14 +1103,14 @@
                  <div class="col-sm-4">
                     <div class="form-group">
                         <label for="name">Nome: </label>
-                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                        <input type="text" class="form-control" ng-model="MD.fincNome"  >
                     </div>
                  </div>
 
                  <div class="col-sm-4">
                     <div class="form-group">
                         <label for="name">CPF:</label>
-                        <input type="text" class="form-control" ng-model="MD.baixaCPF"  >
+                        <input type="text" class="form-control" ng-model="MD.fincCPF"  >
                     </div>
                 </div>
             </div>
@@ -1126,34 +1126,34 @@
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Nº Cartão 4 primeiros dígitos: </label>
-                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" >
+                         <input type="text" class="form-control" ng-model="MD.fincNunCart4P" >
                     </div>
                  </div>
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Nº Cartão 4 últimos dígitos: </label>
-                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" >
+                         <input type="text" class="form-control" ng-model="MD.fincNunCart4U" >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Validade: </label>
-                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient"  >
+                        <input type="text" class="form-control" ng-model="MD.fincValidade"  >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Cod. Seg:</label>
-                        <input type="text" class="form-control" ng-model="MD.baixaCPF"  >
+                        <input type="text" class="form-control" ng-model="MD.fincCodSeg"  >
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="name">Operadora:</label>
-                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.baixaFormPagOper"   > 
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.FincFormPagOper"   > 
                             <option ng-repeat="fd in ListFormsPagOperadoras" ng-value="fd.chave" class="text-capitalize" >{{fd.nm_operadora_cartao}}</option>
                         </select>
                         
@@ -1166,26 +1166,26 @@
             <!-- 
                 cartao de credito                   - L00000020100620202855 
                 Cartão de Débito - Eletron          - L20120705222521  
-                -->
+            -->
             <div class="col-md-12" ng-if="(MD.baixaFormPag == 'L00000020100620202855') ||  (MD.baixaFormPag == 'L20120705222521') "  >
 
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Nº Cartão 4 primeiros dígitos: </label>
-                         <input type="text" class="form-control"   >
+                         <input type="text" class="form-control" ng-model="MD.fincNunCart4P"  >
                     </div>
                  </div>
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Nº Cartão 4 últimos dígitos: </label>
-                         <input type="text" class="form-control"   >
+                         <input type="text" class="form-control"  ng-model="MD.fincNunCart4U" >
                     </div>
                  </div>
 
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Bandeira:</label>
-                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.baixaFormPagOper"   > 
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.fincCardBam"   > 
                             <option ng-repeat="fe in ListFormsPagBandeiras" ng-value="fe.cd_bandeira_cartao" class="text-capitalize" >{{fe.nm_bandeira_cartao}}</option>
                         </select>
                     </div>
@@ -1203,28 +1203,28 @@
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Nº Cheque: </label>
-                         <input type="text" class="form-control"    >
+                         <input type="text" class="form-control" ng-model="MD.ChequeNum"   >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Banco: </label>
-                         <input type="text" class="form-control"   >
+                         <input type="text" class="form-control" ng-model="MD.ChequeBanco"   >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Agência: </label>
-                        <input type="text" class="form-control"  >
+                        <input type="text" class="form-control" ng-model="MD.ChequeAgenc" >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Conta:</label>
-                        <input type="text" class="form-control"  >
+                        <input type="text" class="form-control" ng-model="MD.ChequeConta" >
                     </div>
                 </div>
             </div>
@@ -1239,21 +1239,21 @@
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Banco: </label>
-                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                         <input type="text" class="form-control" ng-model="MD.fincBanco" ng-disabled="true" >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Agência: </label>
-                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                        <input type="text" class="form-control" ng-model="MD.fincAgenc" ng-disabled="true" >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Conta:</label>
-                        <input type="text" class="form-control" ng-model="MD.baixaCPF" ng-disabled="true" >
+                        <input type="text" class="form-control" ng-model="MD.fincConta" ng-disabled="true" >
                     </div>
                 </div>
             </div>
@@ -1264,44 +1264,44 @@
 
 
 
-            <div class="col-md-12">
+            <div ng-if="MD.FormFinaceiroBaixa == true"  class="col-md-12">
                  <div class="col-sm-2  pd-l-0">
                     <div class="form-group">
                         <label for="name">Vencimento: </label>
-                         <input type="text" class="form-control" ng-model="MD.baixaNomePacient" ng-disabled="true" >
+                         <input type="text" class="form-control" ng-model="MD.fincVancim" ng-disabled="true" >
                     </div>
                  </div>
 
                  <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name">Baixa: </label>
-                        <input type="text" class="form-control" ng-model="MD.baixaNomePacient"  >
+                        <input type="text" class="form-control" ng-model="MD.fincBaixa"  >
                     </div>
                  </div>
 
                  <div class="col-sm-1">
                     <div class="form-group">
                         <label for="name">Atraso:</label>
-                        <input type="text" class="form-control" ng-model="MD.baixaCPF" ng-disabled="true" >
+                        <input type="text" class="form-control" ng-model="MD.fincAtraso" ng-disabled="true" >
                     </div>
                 </div>
 
                 <div class="col-sm-7">
                     <div class="form-group">
                         <label for="name">Histórico:</label>
-                        <input type="text" class="form-control" ng-model="MD.baixaCPF" ng-disabled="true" >
+                        <input type="text" class="form-control" ng-model="MD.fincHistoric" ng-disabled="true" >
                     </div>
                 </div>
             </div>
 
 
-            <div class="col-md-12">
+            <div ng-if="MD.FormFinaceiroBaixa == true" class="col-md-12">
                  <div class="col-sm-4  pd-l-0">
                     <div class="form-group">
                         <label for="name">Valor da Parcela: </label>
                          <div class="input-group">
                                 <span class="input-group-addon">R$</span>
-                                <input type="text"  class="form-control" placeholder="0,00">
+                                <input type="text"  class="form-control" placeholder="0,00" ng-model="MD.fincValPace"  >
                         </div>
                     </div>
                  </div>
@@ -1311,7 +1311,7 @@
                         <label for="name">Valor à  Pagar: </label>
                         <div class="input-group">
                                 <span class="input-group-addon">R$</span>
-                                <input type="text"  class="form-control" placeholder="0,00">
+                                <input type="text"  class="form-control" placeholder="0,00" ng-model="MD.fincValAPaga" >
                         </div>
                     </div>
                  </div>
@@ -1321,14 +1321,14 @@
                         <label for="name">Valor Pago:</label>
                         <div class="input-group">
                                 <span class="input-group-addon">R$</span>
-                                <input type="text"  class="form-control" placeholder="0,00">
+                                <input type="text"  class="form-control" placeholder="0,00" ng-model="MD.fincValPago"  >
                         </div>
                     </div>
                 </div>
             </div>
 
 
-            <div class="col-md-12">
+            <div ng-if="MD.FormFinaceiroBaixa == true"  class="col-md-12">
 
 
                 <div class="col-sm-2  pd-l-0">
@@ -1347,7 +1347,7 @@
                         <label for="name">Juros: </label>
                          <div class="input-group">
                                 <span class="input-group-addon">{{MD.baixaFormaCalc}}</span>
-                                <input type="text"  class="form-control" placeholder="0,00">
+                                <input type="text"  class="form-control" placeholder="0,00" ng-model="MD.fincJuros">
                         </div>
                     </div>
                  </div>
@@ -1357,7 +1357,7 @@
                         <label for="name">Desconto:</label>
                         <div class="input-group">
                                 <span class="input-group-addon">{{MD.baixaFormaCalc}}</span>
-                                <input type="text"  class="form-control" placeholder="0,00">
+                                <input type="text"  class="form-control" placeholder="0,00" ng-disabled="MD.fincDescontAtivo"   ng-model="MD.fincDesconto"  >
                         </div>
                     </div>
                 </div>
@@ -1365,7 +1365,12 @@
                  <div class="col-sm-6">
                     <div class="form-group">
                         <label for="name">Unidade de Atendimento:</label>
-                        <input type="text" class="form-control" ng-model="MD.baixaUnidade" >
+                        <select id="select" name="select" class="form-control input-lg" size="1" ng-model="MD.fincUnidade"  > 
+                            <option value="{{MD.cd_unidade}}" >{{MD.nome_unidade}}</option>
+                        </select>
+                        
+                        
+                                               
                     </div>
                 </div>
             </div>
@@ -1374,8 +1379,28 @@
 
         </div>
 
+
+         <div ng-if="MD.FormFinaceiroBaixa == true"  class="col-md-12 finamBt_1">
+                <div class="form-group finamBt_aling_c">
+                    <button type="button" class="btn btn-primary finamBt_2" ng-click="MdBaixaExecuta()" >
+                            <span class="fa-stack ">
+                                <i class="fa fa-check fa-2x" aria-hidden="true"></i>
+                            </span>
+                            <label>Baixar</label>
+                    </button>
+
+                    <button type="button" class="btn btn-primary finamBt_2" ng-click="SairBaixaMdFinaceiro()" >
+                                <span class="fa-stack ">
+                                    <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+                                </span>
+                                <label>Cancelar</label>
+                    </button>
+                </div>
+
+         </div>
+
         <!-- Venc. 	Pgto 	Histórico 	Detalhes 	Débito 	Juro 	Desc 	Crédito 	Cartao 	Baixa 	Situação 	-->
-        <div class="col-sm-12">
+        <div ng-if="MD.FormFinaceiroBaixa == false"  class="col-sm-12">
             <div class="card-block pd-lr-0" style="padding-bottom: 0px;" >
                 <table class="table table-bordered table-striped table-condensed"  style="margin-bottom: 0px;">
                     <thead>
@@ -1408,7 +1433,7 @@
                                 <td  > {{ fb.valor_credito }} </td> <!-- Crédito -->
                                 <td  > {{ fb.juros_cartao }} </td> <!-- Cartao -->
                                 <td style="padding-right: 0;"> {{ fb.nome_quem_baixou }} </td> <!-- Baixa -->
-                                <td ng-open="baixaMdFinanceiro(fb,fb.$$hashKey)"  class="ag-mdFinac-baixa"><label id="MdFinTd{{fb.$$hashKey}}"></label></td> <!-- Situação -->
+                                <td ng-open="baixaMdFinanceiro(fb,fb.$$hashKey)"  class="ag-mdFinac-baixa"><label id="MdFinTd{{fb.$$hashKey}}" ng-click="MdBaixaSelect(fb)" ></label></td> <!-- Situação -->
                             </tr>
                     </tbody>
                 </table>

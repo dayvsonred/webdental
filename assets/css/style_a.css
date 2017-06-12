@@ -520,6 +520,18 @@
     color: #333;
 }
 
+.finamBt_aling_c{
+    margin: auto auto;
+    text-align: center;
+    border-top: 1px solid #eceeef;
+    padding-top: 10;
+    margin-top: 10;
+}
+ 
+.finamBt_2 label{
+    font-weight: bold;
+}
+
 
 .lb-shad-a{
        /* text-shadow:  0.9rem  0.9rem rgba(0, 0, 0, 0.58);*/
@@ -555,6 +567,33 @@
     cursor: pointer;
     color: green;
 }
+
+
+
+/*<!-- Início Stéphano -->*/
+.form-row{
+    width: 100%;
+}
+
+.form-row label{
+    font-size: 12px !important;
+    margin-bottom: 0 !important;
+    font-weight: bold;
+}
+
+.line-separator{
+    background-color: #000000;
+    margin-top:0px;
+    margin-bottom:0px;
+}
+
+label.required:after {
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+/*------------------------*/
+
 
 
 /*----------------------------------------------------------

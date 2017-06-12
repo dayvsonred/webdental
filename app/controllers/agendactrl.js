@@ -176,6 +176,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                      Object.keys(data.data.dados).map(function (key) {
                         //console.log(ArrayCaderias[key].cadeira);
                         data.data.dados[key].cadeiraValue = parseInt(key)+1;
+                        data.data.dados[key].cadeiraValueSelect = parseInt(key);
+                        
                     });
 
                     $scope.ListCadeiras = angular.copy(data.data.dados);
@@ -190,9 +192,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
     $scope.getAgendaDia = function() {
           console.log(" get getAgendaDia " );
-          //console.log($scope.ag);
-          //console.log($scope.ListCadeiras);
-          //console.log($scope.ListCadeiras[0]);
+          console.log($scope.ag);
+          console.log($scope.ListCadeiras);
+          console.log($scope.ListCadeiras[0]);
           //console.log($scope.ag.cadeira);
           if( ((typeof $scope.ag.cadeira == 'undefined') || ($scope.ag.cadeira == null) ) && ($scope.ListCadeiras[0]) && ( $scope.ListCadeiras[0].cadeiraValue > 0  ) ){
               $scope.ag.cadeira = $scope.ListCadeiras[0];
@@ -562,7 +564,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
              * exibe Botão Cancelar 
              */
             //console.log($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda) );
-            if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'E') ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) && ($scope.GridDadosBD[GridBDDados].faltou == null)  ){
+            if((($scope.GridDadosBD[GridBDDados].situacao == null) || ($scope.GridDadosBD[GridBDDados].situacao == 'E') ) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) && ($scope.GridDadosBD[GridBDDados].faltou == null) && ($scope.DataHoje( $scope.GridDadosBD[GridBDDados].data_agenda )) ){
                     //console.log("2");
                     $scope.ListAgendaDaddos[GrindList].BT_cacelarConslt = true;
                     //$scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
@@ -571,8 +573,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             /**
              * exibe Botão Financeiro
              */
-            if(($scope.GridDadosBD[GridBDDados].situacao != null)  && ($scope.GridDadosBD[GridBDDados].faltou == null) && ($scope.HoraMaiorQeAgora($scope.GridDadosBD[GridBDDados].hora_agenda)) ) {
+            if(($scope.GridDadosBD[GridBDDados].cd_paciente != null)  || ($scope.GridDadosBD[GridBDDados].cd_paciente != '' ) ) {
                 $scope.ListAgendaDaddos[GrindList].BT_cartaoFinanceiro = true;
+                //console.log("financeiro");
             }
 
 
@@ -586,7 +589,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             /**
              * exibe Botão Atender paciente 
              */
-            if(($scope.GridDadosBD[GridBDDados].situacao == 'B') && ($scope.GridDadosBD[GridBDDados].faltou == null) ){
+            if(($scope.GridDadosBD[GridBDDados].situacao == 'B') && ($scope.GridDadosBD[GridBDDados].faltou == null) && ($scope.DataHoje( $scope.GridDadosBD[GridBDDados].data_agenda )) ){
                 $scope.ListAgendaDaddos[GrindList].BT_atender = true;
             }
 
@@ -945,6 +948,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         console.log("ShowAtendimento");
         console.log("Usiario clicado");
         console.log(LAG);
+        
+
         $scope.ListBuscaPacientClinica = {};
         if(LAG.dados != "...Agendar..." ){
             console.log("exite dados");
@@ -954,6 +959,10 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             console.log($scope.GridDadosBD[LAG.GridKey]);
             console.log("USER");
             console.log($scope.UserDados);
+
+            console.log("data hoje");
+            console.log($scope.GridDadosBD[LAG.GridKey].data_agenda );
+            console.log($scope.DataHoje( $scope.GridDadosBD[LAG.GridKey].data_agenda ));
              
             // nome
             // observacao
@@ -1115,9 +1124,10 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
            if( ( typeof $scope.MD.duracao != "undefined"  ) && ( typeof $scope.MD.tratamento != "undefined"  ) && ( typeof $scope.MD.nm_motivo_atendimento != "undefined"  ) ) {
                  //console.log("cadastra consulta ########################"); 
 
-                   // console.log($scope.MD); 
+                    
                     $scope.MD.cd_paciente = obj.chave;
-                    $scope.MD.cadeiraValue =  $scope.ag.cadeira.cadeiraValue; //'0'; // desenvolver metodo para altera valor da cadeira para 0 ou 1 ....
+                    $scope.MD.cadeiraValue =  $scope.ag.cadeira.cadeiraValueSelect; // quando salva no banco muda o valor de 1 para 0,  2 para 1 ....
+                    console.log($scope.MD);
                     AgendaService.insertConsultaGrid($scope.MD)
                     .then(function (data) {
                         console.log("get InsertConsultaGrid retorno ");  console.log(data); console.log(data.data);
@@ -1197,6 +1207,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
           //$scope.SelectedUnidMed
           AgendaService.getMedicoDados($scope.ag)
                 .then(function (data) {
+                    
                     //console.log(" get getMedicoDados retorno"); console.log(data); console.log(data.data);
                     //$scope.ListCadeiras = angular.copy(data.data.dados);
             });
@@ -1260,6 +1271,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         $scope.MD = {};
         $scope.PacienteFinanceiro = {};
 
+        $scope.MD.FormFinaceiroBaixa = false; // esconde o form finaceiro baixa
+
         $scope.MD.nome = $scope.GridDadosBD[LAG.GridKey].nm_paciente;
         $scope.MD.sobrenome = $scope.GridDadosBD[LAG.GridKey].sobrenome;
 
@@ -1283,6 +1296,8 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         
         $scope.MD.cd_paciente = $scope.GridDadosBD[LAG.GridKey].cd_paciente;
 
+        $scope.getUnidadeNome($scope.MD.cd_unidade,$scope.MD);
+        $scope.MD.fincUnidade = $scope.MD.cd_unidade
 
          console.log("getFinanceiroPaciente");
             AgendaService.getFinanceiroPaciente($scope.MD)
@@ -1294,8 +1309,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
                     $scope.listFinacGridJuros = angular.copy(data.data.juros);
 
-
+                     console.log("listFinacTratamentos");
                      console.log($scope.listFinacTratamentos);
+                     console.log("listFinacGrid");
                      console.log($scope.listFinacGrid);
 
                      console.log("juros");
@@ -1313,6 +1329,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 .then(function (data) {
                     console.log(" get getPaciente retorno");  console.log(data.data.dados);
                     $scope.MD.pacienteDados = data.data.dados;
+
+                    $scope.MD.fincCPF =  angular.copy($scope.MD.pacienteDados.cpf);
+                    $scope.MD.fincNome = angular.copy($scope.MD.pacienteDados.nm_paciente);
                 });
 
             /***
@@ -1343,6 +1362,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                     $scope.ListFormsPagBandeiras = data.data.dados;
             });
 
+
+            
+
             
             
         /**
@@ -1357,8 +1379,9 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         $scope.MD.baixaFormaCalc = "R$";
 
 
+        console.log("$scope.MD _____ ");
         console.log($scope.MD);
-
+        console.log("------- _____ ");
 
         
 
@@ -1424,7 +1447,71 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
                 //LAG.situacaoBaixaIcon = '<i class="fa fa-arrow-circle-o-down" aria-hidden="true"></i>';
             }
         }
-    }
+    };
+
+
+    /**
+     * Seleciona parcela para baixa
+     */
+    $scope.MdBaixaSelect = function(LAG) {
+        console.log("MdBaixaSelect");
+        console.log(LAG);
+        console.log("-----------");
+        console.log($scope.ag);
+        $scope.MD.FormFinaceiroBaixa = true;
+        $scope.MD.FinaceiroBaixaOBJ = angular.copy(LAG)
+        $scope.MD.fincVancim = $scope.FormataDataUsuaio($scope.MD.FinaceiroBaixaOBJ.data);
+        $scope.MD.fincBaixa = $scope.ag.data_Hoje;
+        $scope.MD.fincHistoric = $scope.MD.FinaceiroBaixaOBJ.historico;
+        $scope.MD.fincValPace = $scope.MD.FinaceiroBaixaOBJ.valor_parcela;
+
+        $scope.MD.fincValAPaga = $scope.MD.FinaceiroBaixaOBJ.valor_parcela;
+        $scope.MD.fincValPago = $scope.MD.FinaceiroBaixaOBJ.valor_parcela;
+        $scope.MD.fincJuros = $scope.MD.FinaceiroBaixaOBJ.juros;
+        $scope.MD.fincDesconto = $scope.MD.FinaceiroBaixaOBJ.desconto;
+
+        
+        $scope.getTratamentDesconto($scope.MD.FinaceiroBaixaOBJ.cd_financeiro);
+
+
+        
+        //$scope.MD.fincNomePaciente
+
+    };
+
+    $scope.MdBaixaExecuta = function() {
+        console.log("MdBaixaExecuta");
+        console.log($scope.MD.FinaceiroBaixaOBJ);
+        console.log($scope.MD);
+        
+    };
+
+
+
+    /**
+     * Feicha o form financeiro 
+     */
+    $scope.SairBaixaMdFinaceiro = function() {
+        console.log("SairBaixaMdFinaceiro");
+        $scope.MD.FormFinaceiroBaixa = false;
+        
+    };
+    
+
+
+    /***
+     * Pego tipo de tratamento se tem desconto
+     */
+    $scope.getTratamentDesconto = function() {
+        AgendaService.getTratamentDesconto(cd_tratamento)
+            .then(function (cd_tratamento) {
+                console.log(" get getTratamentDesconto retorno");  console.log(data.data.dados);
+                //MD.fincDescontAtivo
+        });
+    };
+
+
+
 
 
     /**
@@ -1465,11 +1552,14 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
      
     $scope.addSelectdMdFinaceiro = function() {
         console.log("addSelectdMdFinaceiro");
-
+        console.log($scope.finShow);
+        console.log($scope.MD);
         $scope.MD.tratSelectd = $scope.finShow.cd_financeiro;
         $scope.MD.exibirDebitoSelectd = $scope.MD.debito_efetivado;
         
     };
+
+
 
     $scope.ShowLinhaMdFinacenro = function(LAG) {
         console.log("ShowLinhaMdFinacenro");
@@ -1507,6 +1597,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
         console.log("cadastraFichaRapda");
         console.log($scope.MD);
         $scope.MD.PGnome = "Agendamento - Chamar Paciente"; // NOME DA PAGINA ?
+        $scope.MD.cadeiraValue =  $scope.ag.cadeira.cadeiraValueSelect; // quando salva no banco muda o valor de 1 para 0,  2 para 1 ....
         //**VERIFICA SE TODOS OS DADOS FOI SELECIONADO -APENAS OS QUE O USUARIO DEVE SELECIONAR ###+ adicionar verificar se campo nao e nulo (Campo em branco) */
         if( (typeof $scope.MD.duracao != "undefined") && (typeof $scope.MD.nm_motivo_atendimento != "undefined") && (typeof $scope.MD.tratamento != "undefined") && (typeof $scope.MD.fp_nome != "undefined") && (typeof $scope.MD.fp_sobrenome != "undefined")  && ((typeof $scope.MD.fp_tel_1 != "undefined")  || (typeof $scope.MD.fp_tel_2 != "undefined") ) && (typeof $scope.MD.fp_sexo != "undefined")){
              AgendaService.setFichaRapida($scope.MD)
@@ -1568,6 +1659,36 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
      };
 
 
+
+
+
+    /**
+     * Verifica se a data enviada e a de hoje
+     */
+    $scope.DataHoje = function(dataCompare) {
+        //console.log("DataHoje");
+        var DiaArray = dataCompare.split("-");
+        dataCompare = DiaArray[1]+"-"+DiaArray[2]+"-"+DiaArray[0];
+
+        var Dt_agora = new Date();         var Dt_Seleciona = new Date(dataCompare);
+        
+        var currDate = Dt_agora.getDate();  //currDate = currDate < 10 ? '0' + currDate : currDate;
+        var currMonth = Dt_agora.getMonth()+1;     //currMonth = currMonth < 10 ? '0' + currMonth : currMonth;
+        var currYear = Dt_agora.getFullYear();
+        var hoje  =  currDate +"-"+ currMonth +"-"+ currYear;
+
+        var selectDate = Dt_Seleciona.getDate();  //selectDate = selectDate < 10 ? '0' + selectDate : selectDate;
+        var selectMonth = Dt_Seleciona.getMonth()+1;  //selectMonth = selectMonth < 10 ? '0' + selectMonth : selectMonth;
+        var selectYear = Dt_Seleciona.getFullYear();
+        var SelectDia  =  selectDate +"-"+ selectMonth +"-"+ selectYear;
+
+            if((SelectDia == hoje)){
+                return true;
+            }
+            return false;
+    }
+
+
     /**
      * Retorna True se Hora (00:00) enviada maior que agora
      */
@@ -1579,6 +1700,16 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
             }
             return false;
     }
+
+    /**
+     * Retorna data formatada dd/mm/yyyy 
+     * recebe yyyy-mm-dd
+     */
+    $scope.FormataDataUsuaio = function(dataFormatar) {
+        dataFormatar = dataFormatar.split("-");
+        return dataFormatar[2] +"/"+ dataFormatar[1] +"/"+ dataFormatar[0]
+
+    };
 
 
     /**
@@ -1631,6 +1762,7 @@ angular.module("portal").controller("agendaCtrl", function ($scope, AgendaServic
 
     var dateStr = currDate + "/" + currMonth + "/" + currYear;
     $scope.ag.data_a = dateStr;
+    $scope.ag.data_Hoje = dateStr;
     //console.log(dateStr);
 
 
